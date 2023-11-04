@@ -1,0 +1,44 @@
+footer {
+  background: #222222;
+}
+
+footer a {
+  color: #aaa;
+}
+
+footer p {
+  color: #aaa;
+  margin: 0;
+}
+
+footer a:hover {
+  text-decoration: none;
+  color: #35a22c;
+}
+
+.footer__main i {
+  width: 42px;
+  height: 42px;
+  line-height: 42px;
+  border-radius: 50%;
+  border: 1px solid #454545;
+  transition: all 0.5s;
+}
+
+.footer__main a {
+  margin-right: 10px;
+}
+
+.footer__main a:last-child {
+  margin-right: 0;
+}
+
+.footer__copies {
+  border-top: 1px solid #454545;
+  padding-top: 30px;
+  margin-top: 30px;
+}
+
+.footer__main i:hover {
+  border-color: #35a22c;
+}

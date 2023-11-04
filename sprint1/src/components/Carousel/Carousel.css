@@ -1,0 +1,50 @@
+.carousel {
+  height: 100vh;
+  background-image: url("https://images.unsplash.com/photo-1682686578842-00ba49b0a71a?auto=format&fit=crop&q=80&w=1975&ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D");
+  background-position: center center;
+  background-attachment: fixed;
+  background-size: cover;
+  position: relative;
+}
+
+.description {
+  padding: 20px 0;
+}
+.typeing-text {
+  margin: 100px 0px;
+  text-align: center;
+  color: #cd5cc6;
+  overflow: hidden;
+  border-right: 0.15em solid orange;
+  white-space: nowrap;
+  letter-spacing: 0.02em;
+  animation: typing 3.5s steps(40, end), blink-caret 0.75s step-end infinite;
+}
+
+/* The typing effect */
+@keyframes typing {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+/* The typewriter cursor effect */
+@keyframes blink-caret {
+  from,
+  to {
+    border-color: transparent;
+  }
+  50% {
+    border-color: orange;
+  }
+}
+
+.carousel-btn {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
