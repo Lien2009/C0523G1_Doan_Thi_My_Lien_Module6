@@ -1,0 +1,44 @@
+header {
+    position: fixed;
+    z-index: 9999;
+    top: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    background-color: #a36acb;
+    font-family: Nunito Sans, sans-serif
+}
+.navbar {
+    background-color: rgba(0, 0, 0, 0) !important;
+    --bs-navbar-brand-margin-end: 100%;
+}
+
+.navbar .container {
+    background-color: rgba(0, 0, 0, 0) !important;
+}
+
+.navbar .container .navbar-brand {
+    color: rgb(173, 178, 203);
+}
+
+.navbar .nav-link {
+    color: black;
+    font-weight: bolder;
+    border-radius: 18px;
+    padding: 8px 16px;
+}
+
+.lien-login-btn {
+    border: none;
+    background-color: #ffffff;
+    color: #a36acb;
+    height: 36px;
+    border-radius: 8px;
+    width: 100%;
+    margin-left: 20px;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+}
+
+
+
+

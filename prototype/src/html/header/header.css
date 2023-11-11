@@ -1,0 +1,44 @@
+header {
+    top: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: 75px;
+    position: fixed;
+    background-color: #a36acb;
+    font-family: Nunito Sans, sans-serif;
+    z-index: 1000;
+    margin-bottom: 20px;
+}
+.container-fluid {
+    height: 75px;
+}
+
+.icon {
+    font-size: 30px;
+    width: 40px;
+}
+
+.navbar {
+    /*background-color: rgba(0, 0, 0, 0) !important;*/
+    /*--bs-navbar-brand-margin-end: 100%;*/
+    margin-bottom: 20px;
+}
+
+.navbar .container {
+    background-color: rgba(0, 0, 0, 0) !important;
+}
+
+.navbar .container .navbar-brand {
+    color: rgb(173, 178, 203);
+}
+
+.navbar .nav-link {
+    color: black;
+    font-weight: bolder;
+    border-radius: 18px;
+    padding: 8px 16px;
+}
+
+
+
