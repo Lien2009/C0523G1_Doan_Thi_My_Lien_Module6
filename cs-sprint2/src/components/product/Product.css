@@ -1,0 +1,30 @@
+.item {
+    width: 100%;
+    background-color: white;
+    border-radius: 10px;
+    height: 33rem;
+}
+
+.product {
+    margin-top: 7rem;
+}
+
+.card-list {
+    margin-top: 2rem;
+    height: 30rem;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 20px;
+}
+
+.lien-add {
+    padding-bottom: 1rem;
+}
+
+.typeing-text {
+    text-align: center;
+    color: black;
+    font-family: Pacifico, sans-serif;
+    font-size: 2rem;
+    /*text-shadow: rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px;*/
+}

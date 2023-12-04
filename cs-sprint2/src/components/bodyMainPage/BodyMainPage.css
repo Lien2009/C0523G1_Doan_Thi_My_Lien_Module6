@@ -1,22 +1,138 @@
+/*về chúng tôi*/
+li {
+    list-style: none;
+}
+
+img {
+    max-width: 100%;
+}
+
+.bg-01 {
+    padding: 3.125rem 0;
+    position: relative;
+    overflow: hidden;
+}
+
+.bg-01 .wrapper .content h5 {
+    font-size: 1.5625rem;
+    color: #ff2600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    display: block;
+    margin: 0.625rem 0;
+}
+
+.bg-01 .wrapper .content p {
+    font-size: 0.9375rem;
+    color: #333;
+    line-height: 1.8725rem;
+    text-align: justify;
+    display: block;
+    margin: 0.625rem 0;
+}
+
+.bg-01 .wrapper .content ol {
+    display: flex;
+    align-items: center;
+}
+
+.bg-01 .wrapper .content ol li {
+    position: relative;
+}
+
+.bg-01 .wrapper .content ol li:first-child {
+    z-index: 1;
+    top: 3.125rem;
+    left: 1.25rem;
+}
+
+.bg-01 .wrapper .content ol li:last-child {
+    right: 1.25rem;
+}
+
+
+/*mainpage*/
 .body-main-page {
     flex: 1;
+    margin-top: 0;
 }
+
+/*danh mục*/
+.heading h1 {
+    font-size: 2rem;
+    color: #1f1f1f;
+    text-transform: uppercase;
+    font-weight: 600;
+    letter-spacing: 0.4px;
+    padding-bottom: 0.3125rem;
+    position: relative;
+    white-space: nowrap;
+    display: block;
+    width: fit-content;
+    margin: 0 auto;
+}
+
+.heading {
+    display: block;
+    margin: 1.25rem 0;
+    transition: all ease 0.3s;
+    position: relative;
+    text-align: center;
+}
+
+.heading h1::before {
+    position: absolute;
+    content: "";
+    right: 9rem;
+    bottom: -0.5rem;
+    height: 0.5rem;
+    width: 55%;
+    background: #ff2600;
+    clear: both;
+}
+
+.heading h1 span {
+    color: #ff2600;
+    margin-left: 0.3125rem;
+}
+
 .card {
     position: relative;
     width: 220px;
     height: 250px;
     border-radius: 14px;
-    z-index: 1111;
+    z-index: 1;
     overflow: hidden;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    box-shadow: 20px 20px 60px #bebebe, -20px -20px 60px #ffffff;
-;
+    box-shadow: 20px 20px 60px #bebebe, -20px -20px 60px #ffffff;;
 }
 
-.bg {
+.card-text {
+    z-index: -1;
+    font-weight: bolder;
+    font-size: 20px;
+    margin-top: 12rem;
+    color: white;
+    padding: 0 8px;
+    background-color: #813531;
+    border-radius: 10px;
+}
+
+.card:hover > .card {
+    /*background-color: red;*/
+    z-index: 9999;
+}
+
+.card:hover > .card-text {
+    display: block;
+    z-index: 9999;
+
+}
+
+.lien-bg {
     position: absolute;
     top: 5px;
     left: 5px;
@@ -89,7 +205,7 @@
     white-space: nowrap;
     letter-spacing: 0.02em;
     animation: typing 2s steps(40, end), blink-caret 0.75s step-end infinite;
-    font-family: Agbalumo, sans-serif;
+    font-family: Pacifico, sans-serif;
     font-size: 1.5rem;
     /*text-shadow: rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px;*/
 }
