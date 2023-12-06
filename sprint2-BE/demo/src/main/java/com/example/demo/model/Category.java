@@ -15,6 +15,8 @@ public class Category {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String name;
+    @Column(name = "image", columnDefinition = "longtext")
+    private String image;
     @Column(columnDefinition = "boolean default false")
     boolean isDeleted;
 

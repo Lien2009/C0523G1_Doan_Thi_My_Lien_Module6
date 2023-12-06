@@ -16,8 +16,8 @@ public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    @OneToOne
-    @JoinColumn(name = "user_id")
+    @ManyToOne
+    @JoinColumn(name = "user_id",referencedColumnName = "id")
     private User user;
     @Column(name = "order_date", columnDefinition = "datetime")
     private String orderDate;
@@ -25,7 +25,6 @@ public class Order {
     private String phone;
     private String name;
     private int totalPrice;
-    private int shipping_fees;
     private int paymentStatus;
     @Column(columnDefinition = "boolean default false")
     boolean isDeleted;

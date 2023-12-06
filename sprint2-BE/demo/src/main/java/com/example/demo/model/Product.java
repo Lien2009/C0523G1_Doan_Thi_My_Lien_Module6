@@ -24,7 +24,6 @@ public class Product {
     @ManyToOne
     @JoinColumn(name = "category_id",referencedColumnName = "id")
     private Category category;
-    private int feedbackPoint;
     @Column(columnDefinition = "boolean default false")
     boolean isDeleted;
 
