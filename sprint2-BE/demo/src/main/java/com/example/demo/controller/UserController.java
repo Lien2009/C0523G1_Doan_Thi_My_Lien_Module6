@@ -47,4 +47,13 @@ public class UserController {
         String jwtToken = jwtTokenUtil.generateToken(userDetails);
         return ResponseEntity.ok().body(new JwtResponse(jwtToken));
     }
+    @GetMapping("/getUser/{userName}")
+    public ResponseEntity<Object> getUser(@PathVariable String userName) {
+        User user = userService.findByUserName(userName);
+        if (user != null) {
+            return new ResponseEntity<>(user, HttpStatus.OK);
+        }
+        return new ResponseEntity<>("Không tìm thấy user", HttpStatus.NOT_FOUND);
+    }
+
 }

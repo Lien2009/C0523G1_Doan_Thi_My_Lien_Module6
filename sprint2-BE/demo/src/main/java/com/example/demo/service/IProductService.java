@@ -1,9 +1,13 @@
 package com.example.demo.service;
 
+import com.example.demo.dto.ProductDto;
 import com.example.demo.model.Product;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 public interface IProductService {
-    Page<Product> getAll(Pageable pageable);
+    Page<ProductDto> getAll(Pageable pageable, String name);
+    Page<ProductDto> getProductByCategory(Pageable pageable, String name, String categoryId);
+    Product findById(int id);
+    Product findProductInCart(int id);
 }
