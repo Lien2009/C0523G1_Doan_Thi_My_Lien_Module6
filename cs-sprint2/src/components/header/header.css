@@ -12,6 +12,13 @@
     align-items: center;
 
 }
+.info{
+  border: none;
+
+}
+.dropdown-item{
+  margin: 0;
+}
 .dropdown-item:hover{
   background-color: #f7eac8;
 }

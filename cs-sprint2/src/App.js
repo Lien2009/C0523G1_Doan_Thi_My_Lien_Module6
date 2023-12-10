@@ -6,7 +6,9 @@ import Footer from "./components/footer/Footer";
 import Cart from "./components/cart/Cart";
 import Product from "./components/product/Product";
 import Login from "./components/login/Login";
-
+import {ToastContainer} from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import AllProduct from "./components/product/AllProduct";
 function App() {
     return (
         <>
@@ -21,8 +23,10 @@ function App() {
                 <Route path="/" element={<Footer/>}/>
                 <Route path="/login" element={<Login/>}/>
                 <Route path="/cart" element={<Cart/>}/>
-                <Route path="/product" element={<Product/>}/>
+                <Route path="/product/:id" element={<Product/>}/>
+                <Route path="/allProduct" element={<AllProduct/>}/>
             </Routes>
+            <ToastContainer/>
         </>
     );
 }
