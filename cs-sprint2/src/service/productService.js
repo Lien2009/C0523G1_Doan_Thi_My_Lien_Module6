@@ -34,3 +34,11 @@ export const findCategoryById = async (id) => {
         alert("Tìm danh mục bị lỗi!")
     }
 }
+export const findBestSeller = async () => {
+    try {
+        const res = await axios.get(URL_PRODUCT + `/bestSeller`);
+        return res
+    }catch (e){
+        alert("Tìm bestSeller bị lỗi!")
+    }
+}

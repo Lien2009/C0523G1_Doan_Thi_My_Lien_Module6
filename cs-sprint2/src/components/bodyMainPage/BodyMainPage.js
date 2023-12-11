@@ -1,10 +1,11 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import './BodyMainPage.css'
 import {Link, useNavigate} from "react-router-dom";
 import imag5 from "./img/imag5.jpg"
 import imag4 from "./img/imag4.jpg"
 import cate3 from "./img/cate3.jpg"
 import {getAllCategory} from "../../service/productService";
+import {CartContext} from "../context/Context";
 
 const BodyMainPage = () => {
     const navigate = useNavigate();
@@ -17,6 +18,9 @@ const BodyMainPage = () => {
     }
     const goProductPage = (id) => {
         navigate(`/product/${id}`)
+    }
+    const goBestSellerPage = () => {
+        navigate(`/bestSeller`)
     }
     useEffect(() => {
         display();
@@ -78,68 +82,25 @@ const BodyMainPage = () => {
             </div>
             <div className="feedbacks">
                 <div className="feedback-list">
+
                     {categories !== undefined?(
                         categories.map((cate,index)=>{
                             return(
                                 <div className="card" key={index}>
                                     <div className="lien-bg"><img src={cate.image}/></div>
                                     <div className="blob"></div>
-                                    <div className="card-text" onClick={() => goProductPage(cate.id)}>{cate.name}<i
+                                    <div className="card-text" onClick={() =>
+                                    {if(index === 0){
+                                        goBestSellerPage();
+                                    }else {goProductPage(cate.id)}}}>{cate.name}<i
                                         className="fa-solid fa-angle-right fa-beat"
                                         style={{color: "white"}}></i></div>
                                 </div>
                             )
                         })
                     ):(<span>Không có kết quả</span>)}
-                {/*    /!*<Link to="/product">*!/*/}
-                {/*    <div className="card">*/}
-                {/*        <div className="lien-bg"><img src={cate3}/></div>*/}
-                {/*        <div className="blob"></div>*/}
-                {/*        <div className="card-text" onClick={goProductPage}>Combo 1 Người <i*/}
-                {/*            className="fa-solid fa-angle-right fa-beat"*/}
-                {/*            style={{color: "white"}}></i></div>*/}
-                {/*    </div>*/}
-                {/*    /!*</Link>*!/*/}
-                {/*    <div className="card">*/}
-                {/*        <div className="lien-bg"><img src={cate3}/></div>*/}
-                {/*        <div className="blob"></div>*/}
-                {/*        <div className="card-text">Combo Nhóm <i className="fa-solid fa-angle-right fa-beat"*/}
-                {/*                                                 style={{color: "white"}}></i></div>*/}
-                {/*    </div>*/}
-                {/*    <div className="card">*/}
-                {/*        <div className="lien-bg"><img src={cate3}/></div>*/}
-                {/*        <div className="blob"></div>*/}
-                {/*        <div className="card-text">Gà Rán <i className="fa-solid fa-angle-right fa-beat"*/}
-                {/*                                             style={{color: "white"}}></i></div>*/}
-                {/*    </div>*/}
-                {/*    <div className="card">*/}
-                {/*        <div className="lien-bg"><img src={cate3}/></div>*/}
-                {/*        <div className="blob"></div>*/}
-                {/*        <div className="card-text">Hamburger <i className="fa-solid fa-angle-right fa-beat"*/}
-                {/*                                                style={{color: "white"}}></i></div>*/}
-                {/*    </div>*/}
                 </div>
             </div>
-            {/*<div className="feedbacks">*/}
-            {/*    <div className="feedback-list">*/}
-            {/*        <div className="card">*/}
-            {/*            <div className="lien-bg" style={{backgroundImage: 'url(cate1)'}}></div>*/}
-            {/*            <div className="blob"></div>*/}
-            {/*        </div>*/}
-            {/*        <div className="card">*/}
-            {/*            <div className="lien-bg" style={{backgroundImage: 'url(cate1)'}}></div>*/}
-            {/*            <div className="blob"></div>*/}
-            {/*        </div>*/}
-            {/*        <div className="card">*/}
-            {/*            <div className="lien-bg" style={{backgroundImage: 'url(cate1)'}}></div>*/}
-            {/*            <div className="blob"></div>*/}
-            {/*        </div>*/}
-            {/*        <div className="card">*/}
-            {/*            <div className="lien-bg" style={{backgroundImage: 'url(cate1)'}}></div>*/}
-            {/*            <div className="blob"></div>*/}
-            {/*        </div>*/}
-            {/*    </div>*/}
-            {/*</div>*/}
         </section>
     );
 };
