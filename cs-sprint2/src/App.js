@@ -9,6 +9,7 @@ import Login from "./components/login/Login";
 import {ToastContainer} from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import AllProduct from "./components/product/AllProduct";
+import BestSeller from "./components/product/BestSeller";
 function App() {
     return (
         <>
@@ -25,6 +26,7 @@ function App() {
                 <Route path="/cart" element={<Cart/>}/>
                 <Route path="/product/:id" element={<Product/>}/>
                 <Route path="/allProduct" element={<AllProduct/>}/>
+                <Route path="/bestSeller" element={<BestSeller/>}/>
             </Routes>
             <ToastContainer/>
         </>

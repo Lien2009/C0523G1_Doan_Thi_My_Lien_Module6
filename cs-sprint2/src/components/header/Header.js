@@ -54,6 +54,9 @@ export default function Header() {
     const goProductPage = (id) => {
         navigate(`/product/${id}`)
     }
+    const goBestSellerPage = () => {
+        navigate(`/bestSeller`)
+    }
     return (
         <header className="lien-header">
             <NavbarMobile isOpenNavbarMobile={isOpenNavbarMobile}
@@ -70,8 +73,8 @@ export default function Header() {
                     </button>
                     <div className="d-flex align-items-center">
                         <Link to={'/'}>
-                            <img src={logo} alt="logo"
-                                 style={{width: "70px", borderRadius: "50%"}}/>
+                            <img src={logo2} alt="logo"
+                                 style={{width: "6rem", borderRadius: "50%"}}/>
                         </Link>
 
                     </div>
@@ -99,7 +102,9 @@ export default function Header() {
                                             categories.map((cate, index) => {
                                                 return (
                                                     <li key={index}><a className="dropdown-item"
-                                                                       onClick={() => goProductPage(cate.id)}>{cate.name}</a>
+                                                                       onClick={() => {if(index === 0){
+                                                                           goBestSellerPage();
+                                                                       }else {goProductPage(cate.id)}}}>{cate.name}</a>
                                                     </li>
                                                 )
                                             })

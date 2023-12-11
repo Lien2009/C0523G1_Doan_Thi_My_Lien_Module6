@@ -1,8 +1,9 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import p1 from "./img/p1.jpg"
 import "./Product.css"
 import {getAllProduct} from "../../service/productService";
 import {toast} from "react-toastify";
+import {CartContext} from "../context/Context";
 
 const AllProduct = () => {
     const [products, setProducts] = useState([]);
