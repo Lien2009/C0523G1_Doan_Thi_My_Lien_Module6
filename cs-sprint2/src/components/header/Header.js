@@ -1,5 +1,5 @@
 import "./header.css"
-import React, {useEffect, useRef, useState} from "react";
+import React, {useContext, useEffect, useRef, useState} from "react";
 import NavbarMobile from "./NavbarMobile";
 import {Link, useNavigate} from "react-router-dom";
 import logo from "./img/logo.jpg";
@@ -12,6 +12,7 @@ import {toast} from "react-toastify";
 import AllProduct from "../product/AllProduct";
 import {getAllCategory} from "../../service/productService";
 import Cart from "../cart/Cart";
+import {CartContext} from "../context/Context";
 
 
 export default function Header() {
@@ -22,6 +23,8 @@ export default function Header() {
     const accessToken = localStorage.getItem('JWT')
     const [isShowModal, setShowModal] = useState(false);
     const [categories, setCagories] = useState([]);
+    const cartContext = useContext(CartContext);
+    const {totalQuantity} = cartContext;
     const goLoginPage = () => {
         navigate(`/login`)
     }
@@ -190,10 +193,11 @@ export default function Header() {
                                 </div>
                             </div>
                     }
-                    <div className="float-lg-end lien-login-btn">
+                    <div className="float-lg-end lien-login-btn position-relative">
                         <Link to="/cart">
                             <TbShoppingCartHeart style={{color: "white", fontSize: "35px"}}/>
                         </Link>
+                        <span className="cart__product-quantity">{totalQuantity >= 100 ? '+99' : totalQuantity}</span>
                     </div>
                 </nav>
             </div>

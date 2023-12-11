@@ -190,7 +190,21 @@
   right: 0;
   transform: translate(-120%, -50%) rotate(45deg);
 }
-
+.cart__product-quantity {
+  color: #813531;
+  position: absolute;
+  background: white;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  top: -10px;
+  right: -12px;
+  font-weight: 600;
+  font-size: 12px;
+}
 @media only screen and (min-width: 991px) {
   .lien-login-btn button > span {
     display: block;

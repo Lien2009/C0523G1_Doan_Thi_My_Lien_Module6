@@ -1,6 +1,6 @@
 import './Login.css'
 import {useNavigate} from "react-router-dom";
-import {useContext, useState} from "react";
+import {useContext} from "react";
 import * as loginService from "../../service/userService";
 import {toast} from "react-toastify";
 import {ErrorMessage, Field, Form, Formik} from "formik";
@@ -11,20 +11,19 @@ import {jwtDecode} from "jwt-decode";
 const Login = ()=>{
     const navigate = useNavigate();
     const cartContext = useContext(CartContext);
-    const {setUserId} = cartContext;
+    const {setUserId, getAllCart} = cartContext;
     const handleLogin = async (values) => {
         try {
             const res = await loginService.login(values);
-
             loginService.addJwtTokenToLocalStorage(res.data.jwtToken);
             const tempURL = localStorage.getItem("tempURL");
             localStorage.removeItem("tempURL");
             if(res.status === 200){
                 const jwt = jwtDecode(res.data.jwtToken);
                 const user = await userService.getUser(jwt.sub);
-                console.log(user)
                 if (user) {
                     setUserId(user.id);
+                    getAllCart(user.id)
                 }
                 if(tempURL){
                     navigate(tempURL);
