@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.dto.BestSellerDto;
 import com.example.demo.dto.ProductDto;
 import com.example.demo.service.IProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @CrossOrigin("*")
@@ -41,5 +44,12 @@ public class ProductController {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(productPage, HttpStatus.OK);
+    }
+    @GetMapping("/bestSeller")
+    public ResponseEntity<List<BestSellerDto>> getBestSeller(){
+        List<BestSellerDto> bestSellerDtoList = productService.findBestSeller();
+        if(bestSellerDtoList.isEmpty()){
+            return  new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }return new ResponseEntity<>(bestSellerDtoList,HttpStatus.OK);
     }
 }
