@@ -1,14 +1,21 @@
 import {useNavigate} from "react-router-dom";
 import {toast} from "react-toastify";
 import * as userService from "../../service/userService";
+import {useContext} from "react";
+import {CartContext} from "../context/Context";
 
 export function Logout (events){
     const {show, handleClose} = events;
     const navigate = useNavigate();
+    const cartContext = useContext(CartContext);
+    const {dispatch} = cartContext;
     const handleLogout = ()=>{
         userService.handleLogout();
         handleClose();
         navigate("/");
+        dispatch({
+            type: 'REMOVE_ALL_ITEMS',
+        })
         toast.success("Đăng xuất thành công!");
     }
     if(!show){

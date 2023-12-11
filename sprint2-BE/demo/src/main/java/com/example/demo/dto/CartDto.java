@@ -7,4 +7,6 @@ public interface CartDto {
     String getName();
     String getImage();
     String getDescription();
+    int getProductQuantity();
+    int getCartId();
 }
