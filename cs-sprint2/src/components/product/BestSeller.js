@@ -1,10 +1,12 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import "./Product.css"
 import {findBestSeller} from "../../service/productService";
-import {toast} from "react-toastify";
+import {CartContext} from "../context/Context";
 
 const AllProduct = () => {
     const [products, setProducts] = useState([]);
+    const cartContext = useContext(CartContext);
+    const {handleAddProductToCart} = cartContext;
 
     useEffect(() => {
         display();
@@ -51,7 +53,8 @@ const AllProduct = () => {
                                         <div className="d-flex px-4 justify-content-between w-100 lien-add"
                                              style={{color: "#e22625"}}>
                                             <h3 className="fs-5 fw-bolder mb-0 pt-1">{pro.price.toLocaleString()} đ</h3>
-                                            <button className="btn btn-sm py-0 px-2"
+                                            <button onClick={() => handleAddProductToCart(pro.id)}
+                                                    className="btn btn-sm py-0 px-2"
                                                     style={{
                                                         backgroundColor: "#feb60a",
                                                         borderRadius: "20px"
@@ -64,13 +67,9 @@ const AllProduct = () => {
                             </div>
                         )
                     })
-
                 ) : (<span>Không có món ăn</span>)}
-
             </div>
         </div>
-
-
     )
 }
 export default AllProduct;

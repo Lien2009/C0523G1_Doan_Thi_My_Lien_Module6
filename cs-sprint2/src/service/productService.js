@@ -18,9 +18,25 @@ export const getAllProduct = async (currentPage, limit,name)=>{
         alert("SP lỗi!")
     }
 }
+export const getAllProductSort = async (currentPage, limit,name)=>{
+    try{
+        const res = await axios.get(URL_PRODUCT+`/getAllSort?page=${currentPage}&limit=${limit}&name=${name}`);
+        return res;
+    }catch (e){
+        alert("SP lỗi!")
+    }
+}
 export const getAllProductByCate = async (currentPage, limit,name,categoryId)=>{
     try{
         const res = await axios.get(URL_PRODUCT+`/getProductByCate?page=${currentPage}&limit=${limit}&name=${name}&categoryId=${categoryId}`);
+        return res;
+    }catch (e){
+        alert("SP theo danh mục lỗi!")
+    }
+}
+export const getAllProductByCateSort = async (currentPage, limit,name,categoryId)=>{
+    try{
+        const res = await axios.get(URL_PRODUCT+`/getProductByCateSort?page=${currentPage}&limit=${limit}&name=${name}&categoryId=${categoryId}`);
         return res;
     }catch (e){
         alert("SP theo danh mục lỗi!")

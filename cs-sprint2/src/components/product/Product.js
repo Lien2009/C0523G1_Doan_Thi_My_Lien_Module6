@@ -1,34 +1,49 @@
 import React, {useContext, useEffect, useState} from 'react';
 import p1 from "./img/p1.jpg"
 import "./Product.css"
-import {findCategoryById, getAllProduct, getAllProductByCate} from "../../service/productService";
+import {
+    findCategoryById,
+    getAllProduct,
+    getAllProductByCate,
+    getAllProductByCateSort,
+    getAllProductSort
+} from "../../service/productService";
 import {toast} from "react-toastify";
 import {useNavigate, useParams} from "react-router-dom";
 import {CartContext} from "../context/Context";
-import {addProductToCartByUserIdAndProductId} from "../../service/orderService";
+import { TbFilterHeart } from "react-icons/tb";
+import { FaFilterCircleDollar } from "react-icons/fa6";
 
 const Product = () => {
     const [products, setProducts] = useState([]);
     const [currentPage, setCurrentPage] = useState(0);
     const [refresh, setRefresh] = useState(true);
     const [totalPages, setTotalPages] = useState(0);
-    const [records, setRecords] = useState("");
     const [limit, setLimit] = useState(8);
     const [searchName, setSearchName] = useState("");
     const [categoryName, setCategoryName] = useState("");
     const pattern = /[!@#$%^&*()_+=|{}<>?]/;
     const {id} = useParams();
     const cartContext = useContext(CartContext);
-    const {dispatch, userId} = cartContext;
-    
+    const {handleAddProductToCart} = cartContext;
+    const [sort, setSort] = useState(false);
     useEffect(() => {
-        display();
+        if(!sort){
+            display();
+        }else {
+            displaySort();
+            console.log("sort")
+        }
         findCategory();
-    }, [currentPage, refresh, id]);
+    }, [currentPage, refresh, id,sort]);
     const display = async () => {
         const res = await getAllProductByCate(currentPage, limit, searchName, id);
         setProducts(res.data.content);
-        setRecords(res.data.size);
+        setTotalPages(res.data.totalPages);
+    }
+    const displaySort = async () => {
+        const res = await getAllProductByCateSort(currentPage, limit, searchName,id);
+        setProducts(res.data.content);
         setTotalPages(res.data.totalPages);
     }
     const findCategory = async () => {
@@ -39,7 +54,7 @@ const Product = () => {
         setCurrentPage((currentPage) => currentPage - 1);
         setRefresh((refresh) => !refresh);
     }
-    
+
     const nextPage = () => {
         setCurrentPage((currentPage) => currentPage + 1);
         setRefresh((refresh) => !refresh);
@@ -70,28 +85,11 @@ const Product = () => {
         }
         return starArray;
     };
-    
-    const handleAddProductToCart = async (productId) => {
-        const res = await addProductToCartByUserIdAndProductId(userId, productId)
-        if (res && res.data.code === 200) {
-            dispatch({
-                type: 'ADD_CART',
-                payload: {
-                    id: productId,
-                    data: res.data.data
-                }
-            })
-            toast.success(res.data.message)
-        } else {
-            toast.error(res.data.message)
-        }
-       
-    }
-    
+
     return (
         <div className="product">
             <h2 className="typeing-text">{categoryName}</h2>
-            <div className="ms-2 navbar-collapse navbar-middle" id="navbarSupportedContent">
+            <div className="ms-2 navbar-collapse navbar-middle" id="navbarSupportedContent" style={{display: 'flex', alignItems: 'center' }}>
                 <form>
                     <div className="input-group">
                         <div className='search-btn'>
@@ -111,6 +109,12 @@ const Product = () => {
                                }}/>
                     </div>
                 </form>
+                <div>
+                    <TbFilterHeart style={{fontSize:"2.5rem", marginLeft:"0.5rem", color: "#e32929"}} onClick={()=>setSort(true)}/>
+                </div>
+                <div>
+                    <FaFilterCircleDollar style={{fontSize:"2.5rem", marginLeft:"1rem", color: "#e32929"}} onClick={()=>setSort(false)}/>
+                </div>
             </div>
             <div className="card-list container-fluid">
                 {products !== undefined ? (
@@ -133,7 +137,10 @@ const Product = () => {
                                             <h3 className="fs-5 fw-bolder mb-0 pt-1">{pro.price.toLocaleString()} đ</h3>
                                             <button onClick={() => handleAddProductToCart(pro.id)}
                                                     className="btn btn-sm py-0 px-2"
-                                                    style={{backgroundColor: "#feb60a", borderRadius: "20px"}}> Thêm <i
+                                                    style={{
+                                                        backgroundColor: "#feb60a",
+                                                        borderRadius: "20px"
+                                                    }}> Thêm <i
                                                 className="fa-solid fa-cart-plus" style={{color: "#e22625"}}></i>
                                             </button>
                                         </div>
@@ -143,7 +150,7 @@ const Product = () => {
                         )
                     })
                 ) : (<span>Không có món ăn</span>)}
-            
+
             </div>
             <div aria-label="Page navigation example mt-3"
                  style={{marginTop: "1.5rem", display: "flex", justifyContent: "center"}}>
@@ -166,8 +173,8 @@ const Product = () => {
                 </ul>
             </div>
         </div>
-    
-    
+
+
     )
 }
 export default Product;

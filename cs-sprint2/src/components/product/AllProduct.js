@@ -1,27 +1,40 @@
 import React, {useContext, useEffect, useState} from 'react';
 import p1 from "./img/p1.jpg"
 import "./Product.css"
-import {getAllProduct} from "../../service/productService";
+import {getAllProduct, getAllProductSort} from "../../service/productService";
 import {toast} from "react-toastify";
 import {CartContext} from "../context/Context";
+import { TbFilterHeart } from "react-icons/tb";
+import { FaFilterCircleDollar } from "react-icons/fa6";
+import { TbFilterDollar } from "react-icons/tb";
 
 const AllProduct = () => {
     const [products, setProducts] = useState([]);
     const [currentPage, setCurrentPage] = useState(0);
     const [refresh, setRefresh] = useState(true);
     const [totalPages, setTotalPages] = useState(0);
-    const [records, setRecords] = useState("");
     const [limit, setLimit] = useState(8);
     const [searchName, setSearchName] = useState("");
-    const pattern = /[!@#$%^&*()_+=|{}<>?]/;
+    const pattern = /^[a-zA-Z0-9\sàáạảãâầấậẩẫăằắặẳẵèéẹẻẽêềếệểễìíịỉĩòóọỏõôồốộổỗơờớợởỡùúụủũưừứựửữỳýỵỷỹđÀÁẠẢÃÂẦẤẬẨẪĂẰẮẶẲẴÈÉẸẺẼÊỀẾỆỂỄÌÍỊỈĨÒÓỌỎÕÔỒỐỘỔỖƠỜỚỢỞỠÙÚỤỦŨƯỪỨỰỬỮỲÝỴỶỸĐ]+$/;
+    const cartContext = useContext(CartContext);
+    const {handleAddProductToCart} = cartContext;
+    const [sort, setSort] = useState(false);
 
     useEffect(() => {
-        display();
-    }, [currentPage, refresh]);
+        if(!sort){
+            display();
+        }else {
+            displaySort()
+        }
+    }, [currentPage, refresh,sort]);
     const display = async () => {
         const res = await getAllProduct(currentPage, limit, searchName);
         setProducts(res.data.content);
-        setRecords(res.data.size);
+        setTotalPages(res.data.totalPages);
+    }
+    const displaySort = async () => {
+        const res = await getAllProductSort(currentPage, limit, searchName);
+        setProducts(res.data.content);
         setTotalPages(res.data.totalPages);
     }
     const prePage = () => {
@@ -40,7 +53,7 @@ const AllProduct = () => {
         }
     }
     const handleSearch = () => {
-        if (pattern.test(searchName)) {
+        if (!pattern.test(searchName)) {
             toast.warn("Vui lòng không nhập ký tự đặc biệt!");
         } else {
             setCurrentPage(0);
@@ -58,14 +71,13 @@ const AllProduct = () => {
             );
         }
         return starArray;
-
     };
 
     return (
         <div className="product min-vh-100">
             <h2 className="typeing-text">Danh Sách Món Ăn</h2>
 
-            <div className="ms-2 navbar-collapse navbar-middle" id="navbarSupportedContent">
+            <div className="ms-2 navbar-collapse navbar-middle" id="navbarSupportedContent" style={{display: 'flex', alignItems: 'center' }}>
                 <form>
                     <div className="input-group">
                         <div className='search-btn'>
@@ -85,8 +97,13 @@ const AllProduct = () => {
                                }}/>
                     </div>
                 </form>
+                <div>
+                    <TbFilterHeart style={{fontSize:"2.5rem", marginLeft:"0.5rem", color: "#e32929"}} onClick={()=>setSort(true)}/>
+                </div>
+                <div>
+                    <FaFilterCircleDollar style={{fontSize:"2.5rem", marginLeft:"1rem", color: "#e32929"}} onClick={()=>setSort(false)}/>
+                </div>
             </div>
-
 
             <div className="card-list container-fluid">
                 {products !== undefined ? (
@@ -107,7 +124,8 @@ const AllProduct = () => {
                                         <div className="d-flex px-4 justify-content-between w-100 lien-add"
                                              style={{color: "#e22625"}}>
                                             <h3 className="fs-5 fw-bolder mb-0 pt-1">{pro.price.toLocaleString()} đ</h3>
-                                            <button className="btn btn-sm py-0 px-2"
+                                            <button onClick={() => handleAddProductToCart(pro.id)}
+                                                    className="btn btn-sm py-0 px-2"
                                                     style={{
                                                         backgroundColor: "#feb60a",
                                                         borderRadius: "20px"
@@ -120,9 +138,7 @@ const AllProduct = () => {
                             </div>
                         )
                     })
-
                 ) : (<span>Không có món ăn</span>)}
-
             </div>
             <div aria-label="Page navigation example mt-3" style={{marginTop:"1.5rem",display:"flex",justifyContent:"center"}}>
                 <ul className="pagination">
@@ -144,8 +160,6 @@ const AllProduct = () => {
                 </ul>
             </div>
         </div>
-
-
     )
 }
 export default AllProduct;

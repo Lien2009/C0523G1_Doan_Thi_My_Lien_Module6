@@ -1,9 +1,9 @@
 import axios from "axios";
 
 const URL_CART = "http://localhost:8080/api/orders";
-export const getCart = async (currentPage, limit,userId)=>{
+export const getCart = async (userId)=>{
     try{
-        return await axios.get(URL_CART+`/cart/${userId}?page=${currentPage}&limit=${limit}`);
+        return await axios.get(URL_CART+`/cart/${userId}`);
     }catch (e){
         alert("cart lỗi")
     }

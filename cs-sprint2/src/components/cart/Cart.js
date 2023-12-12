@@ -1,4 +1,4 @@
-import React, {useContext} from "react";
+import React, {useContext, useEffect} from "react";
 import './Cart.css'
 import {CartContext} from "../context/Context";
 import CartItem from "./CartItem";
@@ -7,19 +7,20 @@ import * as cartService from "../../service/orderService"
 import {toast} from "react-toastify";
 const Cart = () => {
     const cartContext = useContext(CartContext);
-    const {cartState, userId, totalQuantity, totalPrice,
-        setCurrentPage, setRefresh, currentPage, totalPages} = cartContext;
+    const {cartState, userId, totalQuantity, totalPrice} = cartContext;
 
-   
-    const prePage = () => {
-        setCurrentPage((currentPage) => currentPage - 1);
-        setRefresh((refresh) => !refresh);
-    }
-
-    const nextPage = () => {
-        setCurrentPage((currentPage) => currentPage + 1);
-        setRefresh((refresh) => !refresh);
-    }
+    useEffect(() => {
+        console.log(cartState)
+    }, [cartState])
+    // const prePage = () => {
+    //     setCurrentPage((currentPage) => currentPage - 1);
+    //     setRefresh((refresh) => !refresh);
+    // }
+    //
+    // const nextPage = () => {
+    //     setCurrentPage((currentPage) => currentPage + 1);
+    //     setRefresh((refresh) => !refresh);
+    // }
     
     const handleUpdateCart = async () => {
         const data = cartState.cartItem.map(item => ({
@@ -56,32 +57,32 @@ const Cart = () => {
                                                     )
                                                 })
                                             ) : (<span>Chưa có món ăn nào</span>)}
-                                            <div aria-label="Page navigation example mt-3" style={{
-                                                marginTop: "1.5rem",
-                                                display: "flex",
-                                                justifyContent: "center"
-                                            }}>
-                                                <ul className="pagination">
-                                                    <li className="page-item">
-                                                        <button className="page-link" aria-label="Previous"
-                                                                onClick={() => prePage()} tabIndex={-1}
-                                                                disabled={currentPage + 1 <= 1}>
-                                                            <span aria-hidden="true">&laquo;</span>
-                                                        </button>
-                                                    </li>
-                                                    <li className="page-item">
-                                                        <button
-                                                            className="page-link">{currentPage + 1}/{totalPages}</button>
-                                                    </li>
-                                                    <li className="page-item">
-                                                        <button className="page-link" aria-label="Next"
-                                                                disabled={currentPage + 1 >= totalPages}
-                                                                onClick={() => nextPage()}>
-                                                            <span aria-hidden="true">&raquo;</span>
-                                                        </button>
-                                                    </li>
-                                                </ul>
-                                            </div>
+                                            {/*<div aria-label="Page navigation example mt-3" style={{*/}
+                                            {/*    marginTop: "1.5rem",*/}
+                                            {/*    display: "flex",*/}
+                                            {/*    justifyContent: "center"*/}
+                                            {/*}}>*/}
+                                            {/*    <ul className="pagination">*/}
+                                            {/*        <li className="page-item">*/}
+                                            {/*            <button className="page-link" aria-label="Previous"*/}
+                                            {/*                    onClick={() => prePage()} tabIndex={-1}*/}
+                                            {/*                    disabled={currentPage + 1 <= 1}>*/}
+                                            {/*                <span aria-hidden="true">&laquo;</span>*/}
+                                            {/*            </button>*/}
+                                            {/*        </li>*/}
+                                            {/*        <li className="page-item">*/}
+                                            {/*            <button*/}
+                                            {/*                className="page-link">{currentPage + 1}/{totalPages}</button>*/}
+                                            {/*        </li>*/}
+                                            {/*        <li className="page-item">*/}
+                                            {/*            <button className="page-link" aria-label="Next"*/}
+                                            {/*                    disabled={currentPage + 1 >= totalPages}*/}
+                                            {/*                    onClick={() => nextPage()}>*/}
+                                            {/*                <span aria-hidden="true">&raquo;</span>*/}
+                                            {/*            </button>*/}
+                                            {/*        </li>*/}
+                                            {/*    </ul>*/}
+                                            {/*</div>*/}
                                             <div className="pt-5">
                                                 <h6 className="mb-0"><a href="#!"
                                                                         className="text-body"><i

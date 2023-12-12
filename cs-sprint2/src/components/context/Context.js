@@ -1,7 +1,9 @@
 import {createContext, useEffect, useReducer, useState} from "react";
 import * as orderService from "../../service/orderService";
 import * as userService from "../../service/userService";
-import {getCart} from "../../service/orderService";
+import {addProductToCartByUserIdAndProductId, getCart} from "../../service/orderService";
+import {toast} from "react-toastify";
+import {useNavigate} from "react-router-dom";
 
 export const CartContext = createContext({});
 const cartReducer = (state, action) => {
@@ -51,9 +53,10 @@ export const CartProvider = ({children}) => {
     const [totalPrice, setTotalPrice] = useState(0);
     const [currentPage, setCurrentPage] = useState(0);
     const [totalPages, setTotalPages] = useState(0);
-    const [limit, setLimit] = useState(10);
+    const [limit, setLimit] = useState(3);
     const [refresh, setRefresh] = useState(true);
-    
+    const navigate = useNavigate();
+
     useEffect(() => {
         void getUserId();
     }, [userId, setUserId]);
@@ -82,26 +85,46 @@ export const CartProvider = ({children}) => {
     const getAllCart = async (userId) => {
         try {
             if (userId) {
-                const res = await getCart(currentPage, limit, userId);
+                const res = await getCart(userId);
                 console.log(res)
                 dispatch({
                     type: 'GET_CART',
                     payload:
                         {
-                            carts: res?.data?.code !== 400 ? res?.data?.content : []
+                            carts: res?.data?.code !== 400 ? res?.data : []
                         }
                 })
-                setTotalPages(res.data.totalPages);
                 if (res.status === 200) {
-                    console.log("Lấy dữ liệu thành công")
+                    console.log("Lấy dữ liệu thành công!")
                 } else {
-                    console.log("Lấy dữ liệu thất bại")
+                    console.log("Lấy dữ liệu thất bại!")
                 }
             }
         } catch (e) {
-            console.log("Gio loi")
+            console.log("Giỏ lỗi")
         }
     };
+    const handleAddProductToCart = async (productId) => {
+        if (userId === ''|| !localStorage.getItem("JWT")) {
+            navigate(`/login`);
+            toast.warn("Vui lòng đăng nhập để đặt món!")
+        } else {
+            const res = await addProductToCartByUserIdAndProductId(userId, productId)
+            if (res && res.data.code === 200) {
+                dispatch({
+                    type: 'ADD_CART',
+                    payload: {
+                        id: productId,
+                        data: res.data.data
+                    }
+                })
+
+                toast.success(res.data.message)
+            } else {
+                toast.error(res.data.message)
+            }
+        }
+    }
     
     
     return <CartContext.Provider value={{
@@ -113,11 +136,9 @@ export const CartProvider = ({children}) => {
         setIsRender,
         totalQuantity,
         totalPrice,
-        setCurrentPage,
         setRefresh,
-        currentPage,
-        totalPages,
-        getAllCart
+        getAllCart,
+        handleAddProductToCart
     }}>
         {children}
     </CartContext.Provider>
