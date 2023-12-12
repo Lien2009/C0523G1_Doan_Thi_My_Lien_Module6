@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Set;
 
 @RestController
@@ -28,11 +29,8 @@ public class OrderController {
     private IUserService userService;
 
     @GetMapping("/cart/{userId}")
-    public ResponseEntity<?> getCart(@RequestParam(name = "page", defaultValue = "0", required = false) int page,
-                                     @RequestParam(name = "limit", defaultValue = "2", required = false) int limit,
-                                     @PathVariable int userId) {
-        Pageable pageable = PageRequest.of(page, limit);
-        Page<CartDto> cartDtoList = orderService.getCart(pageable, userId);
+    public ResponseEntity<?> getCart(@PathVariable int userId) {
+        List<CartDto> cartDtoList = orderService.getCart(userId);
         if (cartDtoList.isEmpty()) {
             ResponseContentDto responseContentDto = new ResponseContentDto();
             responseContentDto.setCode(400);

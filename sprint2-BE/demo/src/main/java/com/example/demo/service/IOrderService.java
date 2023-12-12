@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Set;
 
 public interface IOrderService {
-    Page<CartDto> getCart(Pageable pageable, int userId);
+    List<CartDto> getCart(int userId);
 
     void addCart(Cart cart);
 

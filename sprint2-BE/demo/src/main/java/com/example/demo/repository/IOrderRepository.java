@@ -21,7 +21,7 @@ public interface IOrderRepository extends JpaRepository<Order, Integer> {
             "from cart join products on cart.product_id = products.id\n" +
             "join orders on cart.user_id = orders.user_id\n" +
             "where cart.user_id = :userId", nativeQuery = true)
-    Page<CartDto> getCart(Pageable pageable, @Param("userId") int userId);
+    List<CartDto> getCart(@Param("userId") int userId);
 
     @Modifying
     @Transactional

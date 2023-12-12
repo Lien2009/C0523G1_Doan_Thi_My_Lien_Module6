@@ -17,6 +17,11 @@ public interface IProductRepository extends JpaRepository<Product, Integer> {
             "left join feedbacks on products.id = feedbacks.product_id\n" +
             "where products.is_deleted = 0 and products.description like :name group by products.id ORDER BY products.price", nativeQuery = true)
     Page<ProductDto> findAll(Pageable pageable, @Param("name") String name);
+    @Query(value = "select products.id, products.name, products.image, products.description, products.price, IFNULL(CEIL(AVG(feedbacks.point)), 0) as feedbackPoint\n" +
+            "from products\n" +
+            "left join feedbacks on products.id = feedbacks.product_id\n" +
+            "where products.is_deleted = 0 and products.description like :name group by products.id ORDER BY feedbackPoint DESC, products.price asc", nativeQuery = true)
+    Page<ProductDto> findAllSortByPoint(Pageable pageable, @Param("name") String name);
 
     @Query(value = "select products.id, products.name, products.image, products.description, products.price, IFNULL(CEIL(AVG(feedbacks.point)), 0) as feedbackPoint\n" +
             "            from products\n" +
@@ -25,6 +30,13 @@ public interface IProductRepository extends JpaRepository<Product, Integer> {
             "            where products.is_deleted = 0 and products.name like :name and categories.id like :categoryId\n" +
             "            group by products.id ORDER BY products.price", nativeQuery = true)
     Page<ProductDto> findProductByCate(Pageable pageable, @Param("name") String name, @Param("categoryId") String categoryId);
+    @Query(value = "select products.id, products.name, products.image, products.description, products.price, IFNULL(CEIL(AVG(feedbacks.point)), 0) as feedbackPoint\n" +
+            "            from products\n" +
+            "            left join feedbacks on products.id = feedbacks.product_id\n" +
+            "            left join categories on products.category_id = categories.id\n" +
+            "            where products.is_deleted = 0 and products.name like :name and categories.id like :categoryId\n" +
+            "            group by products.id ORDER BY feedbackPoint DESC, products.price asc", nativeQuery = true)
+    Page<ProductDto> findProductByCateSortByPoint(Pageable pageable, @Param("name") String name, @Param("categoryId") String categoryId);
 
     @Query(value = "select * from cart where product_id =:id", nativeQuery = true)
     Product findProductInCart(@Param("id") int id);
@@ -39,4 +51,5 @@ public interface IProductRepository extends JpaRepository<Product, Integer> {
             "order by orderQuantity desc\n" +
             "limit 8", nativeQuery = true)
     List<BestSellerDto> findBestSeller();
+
 }

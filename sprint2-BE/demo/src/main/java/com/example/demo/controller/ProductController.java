@@ -32,6 +32,18 @@ public class ProductController {
         }
         return new ResponseEntity<>(productPage, HttpStatus.OK);
     }
+    @GetMapping("/getAllSort")
+    public ResponseEntity<Page<ProductDto>> findAllSortByPoint(@RequestParam(name = "page", defaultValue = "0", required = false) int page,
+                                                   @RequestParam(name = "limit", defaultValue = "8", required = false) int limit,
+                                                   @RequestParam(name = "name", defaultValue = "", required = false) String name
+    ) {
+        Pageable pageable = PageRequest.of(page, limit);
+        Page<ProductDto> productPage = productService.findAllSortByPoint(pageable, name);
+        if (productPage.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(productPage, HttpStatus.OK);
+    }
     @GetMapping("/getProductByCate")
     public ResponseEntity<Page<ProductDto>> getAll(@RequestParam(name = "page", defaultValue = "0", required = false) int page,
                                                    @RequestParam(name = "limit", defaultValue = "8", required = false) int limit,
@@ -40,6 +52,19 @@ public class ProductController {
     ) {
         Pageable pageable = PageRequest.of(page, limit);
         Page<ProductDto> productPage = productService.getProductByCategory(pageable, name,categoryId);
+        if (productPage.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(productPage, HttpStatus.OK);
+    }
+    @GetMapping("/getProductByCateSort")
+    public ResponseEntity<Page<ProductDto>> getAllSortByPoint(@RequestParam(name = "page", defaultValue = "0", required = false) int page,
+                                                   @RequestParam(name = "limit", defaultValue = "8", required = false) int limit,
+                                                   @RequestParam(name = "name", defaultValue = "", required = false) String name,
+                                                   @RequestParam(name = "categoryId", defaultValue = "", required = false) String categoryId
+    ) {
+        Pageable pageable = PageRequest.of(page, limit);
+        Page<ProductDto> productPage = productService.getProductByCategorySortByPoint(pageable, name,categoryId);
         if (productPage.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }

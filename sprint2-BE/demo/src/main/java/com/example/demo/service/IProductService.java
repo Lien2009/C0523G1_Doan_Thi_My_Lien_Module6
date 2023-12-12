@@ -10,7 +10,9 @@ import java.util.List;
 
 public interface IProductService {
     Page<ProductDto> getAll(Pageable pageable, String name);
+    Page<ProductDto> findAllSortByPoint(Pageable pageable, String name);
     Page<ProductDto> getProductByCategory(Pageable pageable, String name, String categoryId);
+    Page<ProductDto> getProductByCategorySortByPoint(Pageable pageable, String name, String categoryId);
     List<BestSellerDto> findBestSeller();
     Product findById(int id);
     Product findProductInCart(int id);

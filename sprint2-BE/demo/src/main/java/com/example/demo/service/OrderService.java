@@ -39,8 +39,8 @@ public class OrderService implements IOrderService {
     ResponseContentDto responseContentDto = new ResponseContentDto();
 
     @Override
-    public Page<CartDto> getCart(Pageable pageable, int userId) {
-        return orderRepository.getCart(pageable, userId);
+    public List<CartDto> getCart(int userId) {
+        return orderRepository.getCart(userId);
     }
 
     @Override
@@ -147,37 +147,35 @@ public class OrderService implements IOrderService {
 
         List<CartCommand.CartCreateCommand> listCartResponse = new ArrayList<>();
         Optional<Cart> cartOpt = cartRepository.findCartByUserIdAndProductId(userId, productId);
+        if (cartOpt.isPresent()) {
+            Cart cart = cartOpt.get();
+           if (cart.getQuantity() + 1 <= productOpt.get().getQuantity()) {
+                checkQuantityProduct.set(true);
+                var newCart = Cart.builder()
+                        .id(cart.getId())
+                        .quantity(cart.getQuantity() + 1)
+                        .product(productOpt.get())
+                        .user(userOpt.get())
+                        .build();
+                cartRepository.save(newCart);
+            };
+        }else {
+            if (productOpt.get().getQuantity() >= 1) {
+                checkQuantityProduct.set(true);
+                var newCart = Cart.builder()
+                        .quantity(1)
+                        .product(productOpt.get())
+                        .user(userOpt.get())
+                        .build();
+                cartRepository.save(newCart);
+            }
+        }
+        // 1. Sau khi thực hiện thành công thêm vào giỏi hàng\
+        // 2. Lấy danh sách giỏ hàng mới nhất ra
+        Set<Optional<Cart>> newListCart = cartRepository.findListCartByUserId(userOpt.get().getId());
 
-        cartOpt.ifPresentOrElse(
-                (cart) -> {
-                    if (cart.getQuantity() + 1 <= productOpt.get().getQuantity()) {
-                        checkQuantityProduct.set(true);
-                        var newCart = Cart.builder()
-                                .id(cart.getId())
-                                .quantity(cart.getQuantity() + 1)
-                                .product(productOpt.get())
-                                .user(userOpt.get())
-                                .build();
-                        cartRepository.save(newCart);
-                        Set<Optional<Cart>> newListCart = cartRepository.findListCartByUserId(userOpt.get().getId());
-                        listCartResponse.addAll(getNewListCart(newListCart, productOpt.get()));
-                    }
-                },
-                () -> {
-                    if (productOpt.get().getQuantity() >= 1) {
-                        checkQuantityProduct.set(true);
-                        var newCart = Cart.builder()
-                                .quantity(1)
-                                .product(productOpt.get())
-                                .user(userOpt.get())
-                                .build();
-                        cartRepository.save(newCart);
-                        Set<Optional<Cart>> newListCart = cartRepository.findListCartByUserId(userOpt.get().getId());
-                        listCartResponse.addAll(getNewListCart(newListCart, productOpt.get()));
-
-                    }
-                }
-        );
+        // 3. Thêm danh sách giỏ hàng mới vào response cho client
+        listCartResponse.addAll(getNewListCart(newListCart));
 
         if (!checkQuantityProduct.get()) {
             responseContentDto.setCode(400);
@@ -191,18 +189,20 @@ public class OrderService implements IOrderService {
         return responseContentDto;
     }
 
-    private List<CartCommand.CartCreateCommand> getNewListCart (Set<Optional<Cart>> newListCart, Product product) {
+    private List<CartCommand.CartCreateCommand> getNewListCart (Set<Optional<Cart>> newListCart) {
         List<CartCommand.CartCreateCommand> listCartResponse = new ArrayList<>();
         for (Optional<Cart> newCartOpt: newListCart) {
+            Optional<Product> productOpt = productRepository.findById(newCartOpt.get().getProduct().getId());
+
             newCartOpt.ifPresent(cartOp -> {
                 var cartCreateCommand = CartCommand.CartCreateCommand.builder()
                         .productId(cartOp.getProduct().getId())
                         .quantity(cartOp.getQuantity())
-                        .price(product.getPrice())
-                        .name(product.getName())
-                        .image(product.getImage())
-                        .description(product.getDescription())
-                        .productQuantity(product.getQuantity())
+                        .price(productOpt.get().getPrice())
+                        .name(productOpt.get().getName())
+                        .image(productOpt.get().getImage())
+                        .description(productOpt.get().getDescription())
+                        .productQuantity(productOpt.get().getQuantity())
                         .cartId(cartOp.getId())
                         .build();
                 listCartResponse.add(cartCreateCommand);

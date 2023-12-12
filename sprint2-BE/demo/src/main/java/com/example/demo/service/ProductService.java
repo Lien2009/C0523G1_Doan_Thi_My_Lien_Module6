@@ -21,8 +21,18 @@ public class ProductService implements IProductService{
     }
 
     @Override
+    public Page<ProductDto> findAllSortByPoint(Pageable pageable, String name) {
+        return productRepository.findAllSortByPoint(pageable, "%" + name + "%");
+    }
+
+    @Override
     public Page<ProductDto> getProductByCategory(Pageable pageable, String name, String categoryId) {
         return productRepository.findProductByCate(pageable,"%" + name + "%", "%" + categoryId + "%");
+    }
+
+    @Override
+    public Page<ProductDto> getProductByCategorySortByPoint(Pageable pageable, String name, String categoryId) {
+        return productRepository.findProductByCateSortByPoint(pageable,"%" + name + "%", "%" + categoryId + "%");
     }
 
     @Override
