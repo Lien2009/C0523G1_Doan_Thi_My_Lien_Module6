@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
 import com.example.demo.dto.BestSellerDto;
+import com.example.demo.dto.DetailProduct;
 import com.example.demo.dto.ProductDto;
 import com.example.demo.model.Product;
 import com.example.demo.repository.IProductRepository;
@@ -46,7 +47,17 @@ public class ProductService implements IProductService{
     }
 
     @Override
+    public DetailProduct findProductDtoById(int id) {
+        return productRepository.findProductDtoById(id);
+    }
+
+    @Override
     public Product findProductInCart(int id) {
         return productRepository.findProductInCart(id);
+    }
+
+    @Override
+    public List<Product> findRecommendProduct(int cateId) {
+        return productRepository.findAllByCategory(cateId);
     }
 }

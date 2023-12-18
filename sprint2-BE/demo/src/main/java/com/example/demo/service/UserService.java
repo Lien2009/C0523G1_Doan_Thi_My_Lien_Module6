@@ -1,6 +1,8 @@
 package com.example.demo.service;
 
+import com.example.demo.dto.CustomerDto;
 import com.example.demo.dto.JwtResponseUserDetail;
+import com.example.demo.model.Customer;
 import com.example.demo.model.User;
 import com.example.demo.model.UserRole;
 import com.example.demo.repository.IUserRepository;
@@ -26,6 +28,11 @@ public class UserService implements IUserService{
     @Override
     public User findById(int id) {
         return userRepository.findById(id).get();
+    }
+
+    @Override
+    public CustomerDto findCustomerByUser(int userId) {
+        return userRepository.findCustomerByUser(userId);
     }
 
     @Override

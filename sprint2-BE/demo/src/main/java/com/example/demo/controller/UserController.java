@@ -1,7 +1,9 @@
 package com.example.demo.controller;
 
 import com.example.demo.config.JwtTokenUtil;
+import com.example.demo.dto.CustomerDto;
 import com.example.demo.dto.UserLoginDto;
+import com.example.demo.model.Customer;
 import com.example.demo.model.JwtResponse;
 import com.example.demo.model.User;
 import com.example.demo.service.IUserService;
@@ -19,7 +21,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 @RestController
-@CrossOrigin("*")
+@CrossOrigin(maxAge = 3600, origins = "*")
 @RequestMapping("/api/users")
 public class UserController {
     @Autowired
@@ -54,6 +56,14 @@ public class UserController {
             return new ResponseEntity<>(user, HttpStatus.OK);
         }
         return new ResponseEntity<>("Không tìm thấy user", HttpStatus.NOT_FOUND);
+    }
+    @GetMapping("/getCustomer/{userId}")
+    public ResponseEntity<Object> getCustomer(@PathVariable int userId ){
+        CustomerDto customer = userService.findCustomerByUser(userId);
+        if (customer != null) {
+            return new ResponseEntity<>(customer, HttpStatus.OK);
+        }
+        return new ResponseEntity<>("Không tìm thấy customer", HttpStatus.NOT_FOUND);
     }
 
 }

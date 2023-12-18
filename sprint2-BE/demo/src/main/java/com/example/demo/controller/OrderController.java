@@ -2,7 +2,11 @@ package com.example.demo.controller;
 
 import com.example.demo.command.order.CartCommand;
 import com.example.demo.dto.CartDto;
+import com.example.demo.dto.OrderDetailDto;
+import com.example.demo.dto.OrderDto;
 import com.example.demo.dto.ResponseContentDto;
+import com.example.demo.model.Order;
+import com.example.demo.model.OrderDetail;
 import com.example.demo.service.IOrderService;
 import com.example.demo.service.IProductService;
 import com.example.demo.service.IUserService;
@@ -46,30 +50,6 @@ public class OrderController {
         return ResponseEntity.ok(result);
     }
 
-//    @PostMapping("/addCart/{productId}/{userId}")
-//    public ResponseEntity<Object> addCart(@PathVariable Integer productId, @PathVariable Integer userId) {
-//        Cart cart = new Cart();
-//        Product product = productService.findById(productId);
-//        Product product1 = productService.findProductInCart(productId);
-//        User user = userService.findById(userId);
-//        if (product1 != null) {
-//            return new ResponseEntity<>("Món ăn này đã có trong giỏ hàng", HttpStatus.NOT_FOUND);
-//        }
-//        if (product.getQuantity() < 1) {
-//            return new ResponseEntity<>("Hết món", HttpStatus.NOT_FOUND);
-//        }
-//        if (product == null) {
-//            return new ResponseEntity<>("Không tìm thấy món", HttpStatus.NOT_FOUND);
-//        }
-//        if (user == null) {
-//            return new ResponseEntity<>("Không tìm thấy tài khoản", HttpStatus.NOT_FOUND);
-//        }
-//        cart.setProduct(product);
-//        cart.setUser(user);
-//        cart.setQuantity(1);
-//        orderService.addCart(cart);
-//        return new ResponseEntity<>("Thêm vào giỏ hàng thành công!", HttpStatus.OK);
-//    }
 
     @DeleteMapping("/cart/{userId}/delete/{cartId}")
     public ResponseEntity<?> deleteCartById(@PathVariable int userId, @PathVariable int cartId) {
@@ -81,5 +61,29 @@ public class OrderController {
     public ResponseEntity<?> addProductToCart(@PathVariable int userId, @PathVariable int productId) {
         ResponseContentDto result = orderService.addProductToCart(userId, productId);
         return ResponseEntity.ok(result);
+    }
+    @PostMapping("/addOrder")
+    public ResponseEntity<?> addOrder(@RequestParam(name = "userId", defaultValue = "0", required = false) int userId,
+                                      @RequestParam(name = "total", defaultValue = "0", required = false) int total,
+                                      @RequestParam(name = "payment", defaultValue = "0", required = false) int payment
+                                                                                         ){
+        orderService.addOrder(userId,total,payment);
+        return ResponseEntity.ok("Thêm thành công");
+    }
+    @GetMapping("/history/{userId}")
+    public ResponseEntity<?> getAllOrder(@PathVariable int userId) {
+        List<OrderDto> orderDtoList = orderService.getAllOrder(userId);
+        if (orderDtoList.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(orderDtoList, HttpStatus.OK);
+    }
+    @GetMapping("/detail/{orderId}")
+    public ResponseEntity<?> getOrderDetail(@PathVariable int orderId) {
+        List<OrderDetailDto> orderDetailDtoList = orderService.getOrderDetail(orderId);
+        if (orderDetailDtoList.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(orderDetailDtoList, HttpStatus.OK);
     }
 }

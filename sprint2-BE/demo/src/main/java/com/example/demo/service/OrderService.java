@@ -2,6 +2,8 @@ package com.example.demo.service;
 
 import com.example.demo.command.order.CartCommand;
 import com.example.demo.dto.CartDto;
+import com.example.demo.dto.OrderDetailDto;
+import com.example.demo.dto.OrderDto;
 import com.example.demo.dto.ResponseContentDto;
 import com.example.demo.model.*;
 import com.example.demo.repository.ICartRepository;
@@ -187,6 +189,23 @@ public class OrderService implements IOrderService {
         responseContentDto.setData(listCartResponse);
 
         return responseContentDto;
+    }
+
+    @Override
+    public void addOrder(int new_id_account, int new_total_price, int new_payment_status) {
+        orderRepository.addOrder(new_id_account,new_total_price,new_payment_status);
+    }
+
+    @Override
+    public List<OrderDto> getAllOrder(int userId) {
+        List<OrderDto> orderDtoList = orderRepository.getAllOrder(userId);
+        return orderDtoList;
+    }
+
+    @Override
+    public List<OrderDetailDto> getOrderDetail(int orderId) {
+        List<OrderDetailDto> orderDetailDtoList = orderRepository.getOrderDetail(orderId);
+        return orderDetailDtoList;
     }
 
     private List<CartCommand.CartCreateCommand> getNewListCart (Set<Optional<Cart>> newListCart) {

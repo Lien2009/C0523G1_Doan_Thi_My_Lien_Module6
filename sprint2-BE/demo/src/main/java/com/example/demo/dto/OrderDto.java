@@ -11,10 +11,6 @@ public interface OrderDto {
     int getId();
     int getUserId();
     String getOrderDate();
-    String getAddress();
-    String getPhone();
-    String getName();
     int getTotalPrice();
-    int getPaymentStatus();
-    boolean getIsDeleted();
+
 }

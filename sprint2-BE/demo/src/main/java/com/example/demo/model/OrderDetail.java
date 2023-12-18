@@ -18,6 +18,9 @@ public class OrderDetail {
     @Basic
     @Column(name = "quantity")
     private int quantity;
+    @Basic
+    @Column(name = "price")
+    private int price;
 
     @ManyToOne
     @JoinColumn(name = "product_id", referencedColumnName = "id")

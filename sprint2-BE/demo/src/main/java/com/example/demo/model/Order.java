@@ -47,4 +47,5 @@ public class Order {
     @Basic
     @Column(columnDefinition = "boolean default false")
     private boolean isDeleted;
+
 }

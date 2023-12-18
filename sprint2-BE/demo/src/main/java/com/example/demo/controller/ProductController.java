@@ -1,7 +1,9 @@
 package com.example.demo.controller;
 
 import com.example.demo.dto.BestSellerDto;
+import com.example.demo.dto.DetailProduct;
 import com.example.demo.dto.ProductDto;
+import com.example.demo.model.Product;
 import com.example.demo.service.IProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -57,6 +59,14 @@ public class ProductController {
         }
         return new ResponseEntity<>(productPage, HttpStatus.OK);
     }
+    @GetMapping("/findRecommendProduct/{categoryId}")
+    public ResponseEntity<List<Product>> findRecommendProduct(@PathVariable int categoryId) {
+       List<Product> productPage = productService.findRecommendProduct(categoryId);
+        if (productPage.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(productPage, HttpStatus.OK);
+    }
     @GetMapping("/getProductByCateSort")
     public ResponseEntity<Page<ProductDto>> getAllSortByPoint(@RequestParam(name = "page", defaultValue = "0", required = false) int page,
                                                    @RequestParam(name = "limit", defaultValue = "8", required = false) int limit,
@@ -76,5 +86,10 @@ public class ProductController {
         if(bestSellerDtoList.isEmpty()){
             return  new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }return new ResponseEntity<>(bestSellerDtoList,HttpStatus.OK);
+    }
+    @GetMapping("/findById/{id}")
+    public ResponseEntity<DetailProduct> findById(@PathVariable int id){
+        DetailProduct productDto = productService.findProductDtoById(id);
+        return new ResponseEntity<>(productDto,HttpStatus.OK);
     }
 }
