@@ -7,6 +7,8 @@ import {CartContext} from "../context/Context";
 import { TbFilterHeart } from "react-icons/tb";
 import { FaFilterCircleDollar } from "react-icons/fa6";
 import { TbFilterDollar } from "react-icons/tb";
+import {useNavigate} from "react-router-dom";
+import Detail from "./Detail";
 
 const AllProduct = () => {
     const [products, setProducts] = useState([]);
@@ -16,9 +18,13 @@ const AllProduct = () => {
     const [limit, setLimit] = useState(8);
     const [searchName, setSearchName] = useState("");
     const pattern = /^[a-zA-Z0-9\sàáạảãâầấậẩẫăằắặẳẵèéẹẻẽêềếệểễìíịỉĩòóọỏõôồốộổỗơờớợởỡùúụủũưừứựửữỳýỵỷỹđÀÁẠẢÃÂẦẤẬẨẪĂẰẮẶẲẴÈÉẸẺẼÊỀẾỆỂỄÌÍỊỈĨÒÓỌỎÕÔỒỐỘỔỖƠỜỚỢỞỠÙÚỤỦŨƯỪỨỰỬỮỲÝỴỶỸĐ]+$/;
+
+
     const cartContext = useContext(CartContext);
     const {handleAddProductToCart} = cartContext;
     const [sort, setSort] = useState(false);
+    const navigate = useNavigate();
+    const [product, setProduct] = useState({});
 
     useEffect(() => {
         if(!sort){
@@ -53,7 +59,10 @@ const AllProduct = () => {
         }
     }
     const handleSearch = () => {
-        if (!pattern.test(searchName)) {
+        if(searchName.trim()===""){
+            setCurrentPage(0);
+            setRefresh(!refresh);
+        }else if (!pattern.test(searchName)) {
             toast.warn("Vui lòng không nhập ký tự đặc biệt!");
         } else {
             setCurrentPage(0);
@@ -63,7 +72,7 @@ const AllProduct = () => {
     const renderStars = (point) => {
         const starArray = [];
         if (point === 0) {
-            starArray.push(<i className="fa-solid fa-star" style={{color: "white"}}></i>)
+            starArray.push(<p style={{color:"#813531"}}>Chưa có đánh giá</p>)
         }
         for (let i = 0; i < point; i++) {
             starArray.push(
@@ -72,6 +81,9 @@ const AllProduct = () => {
         }
         return starArray;
     };
+    const goDetailPage = (id)=>{
+        navigate(`/detail/${id}`);
+    }
 
     return (
         <div className="product min-vh-100">
@@ -109,9 +121,9 @@ const AllProduct = () => {
                 {products !== undefined ? (
                     products.map((pro, index) => {
                         return (
-                            <div className="item text-center" key={index}>
+                            <div className="item text-center" key={index} >
                                 <div className="product-cover">
-                                    <div className="image-cover p-3" style={{width: "100%", height: "22rem"}}>
+                                    <div className="image-cover p-3" style={{width: "100%", height: "22rem"}} onClick={()=>goDetailPage(pro.id)}>
                                         <img className="rounded bg-white" src={pro.image} alt=""
                                              style={{width: "100%", height: "100%", objectFit: "cover"}}/>
                                     </div>

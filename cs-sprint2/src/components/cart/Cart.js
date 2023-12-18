@@ -1,31 +1,29 @@
-import React, {useContext, useEffect} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import './Cart.css'
 import {CartContext} from "../context/Context";
 import CartItem from "./CartItem";
 import {TbShoppingCartHeart} from "react-icons/tb";
 import * as cartService from "../../service/orderService"
 import {toast} from "react-toastify";
+import {PayPalButton} from "react-paypal-button-v2";
+import {addOrder} from "../../service/orderService";
+import {useNavigate} from "react-router-dom";
+import {findProductById} from "../../service/productService";
+
 const Cart = () => {
     const cartContext = useContext(CartContext);
     const {cartState, userId, totalQuantity, totalPrice} = cartContext;
+    const [payment, setPayment] = useState();
+    const navigate = useNavigate();
 
     useEffect(() => {
         console.log(cartState)
     }, [cartState])
-    // const prePage = () => {
-    //     setCurrentPage((currentPage) => currentPage - 1);
-    //     setRefresh((refresh) => !refresh);
-    // }
-    //
-    // const nextPage = () => {
-    //     setCurrentPage((currentPage) => currentPage + 1);
-    //     setRefresh((refresh) => !refresh);
-    // }
-    
+
     const handleUpdateCart = async () => {
         const data = cartState.cartItem.map(item => ({
-                productId: item.productId,
-                quantity: item.quantity,
+            productId: item.productId,
+            quantity: item.quantity,
         }))
         const res = await cartService.updateCart(userId, data)
 
@@ -35,6 +33,34 @@ const Cart = () => {
             toast.error(res.data.message)
         }
     }
+    // const handleOnSuccess = () => {
+    //     setPayment(0);
+    //     toast.success("Thanh toán thành công")
+    // }
+    // const handleShipCOD = ()=>{
+    //     setPayment(1);
+    //     toast.success("Bạn đã đặt hàng thành công!")
+    // }
+
+    const goOrderPage =async ()=>{
+        let flag = true;
+        for (let i = 0; i < cartState.cartItem.length; i++) {
+            const cartItem = cartState.cartItem[i];
+            const product =await findProductById(cartItem.productId)
+            if(product.quantity <= 0){
+                toast.warn(`${product.name} hết hàng`)
+                flag=false;
+            }else if(cartItem.quantity>product.quantity){
+                toast.warn(`${product.name} chỉ còn ${product.quantity} sản phẩm`)
+                flag=false;
+            }
+        }
+        if(flag){
+            navigate(`/order`);
+        }
+    }
+
+
     return (
         <section className="cart">
             <div className="container ">
@@ -47,44 +73,22 @@ const Cart = () => {
                                         <div className="p-5">
                                             <div className="d-flex justify-content-between align-items-center mb-5">
                                                 <h1 className="fw-bold mb-0 text-black">Giỏ hàng của tôi</h1>
-                                                <button onClick={handleUpdateCart} type="button" className="btn btn-dark d-flex justify-content-center align-items-center gap-2">Cập nhật <TbShoppingCartHeart style={{color: "white", fontSize: "20px"}}/></button>
+                                                <button onClick={handleUpdateCart} type="button"
+                                                        className="btn btn-dark d-flex justify-content-center align-items-center gap-2">Cập
+                                                    nhật <TbShoppingCartHeart
+                                                        style={{color: "white", fontSize: "20px"}}/></button>
                                             </div>
                                             <hr className="my-4"/>
                                             {cartState.cartItem.length > 0 ? (
                                                 cartState.cartItem.map((cart, index) => {
                                                     return (
-                                                        <CartItem key={index} item={cart} maxQuantity={cart.productQuantity}/>
+                                                        <CartItem key={index} item={cart}
+                                                                  maxQuantity={cart.productQuantity}/>
                                                     )
                                                 })
                                             ) : (<span>Chưa có món ăn nào</span>)}
-                                            {/*<div aria-label="Page navigation example mt-3" style={{*/}
-                                            {/*    marginTop: "1.5rem",*/}
-                                            {/*    display: "flex",*/}
-                                            {/*    justifyContent: "center"*/}
-                                            {/*}}>*/}
-                                            {/*    <ul className="pagination">*/}
-                                            {/*        <li className="page-item">*/}
-                                            {/*            <button className="page-link" aria-label="Previous"*/}
-                                            {/*                    onClick={() => prePage()} tabIndex={-1}*/}
-                                            {/*                    disabled={currentPage + 1 <= 1}>*/}
-                                            {/*                <span aria-hidden="true">&laquo;</span>*/}
-                                            {/*            </button>*/}
-                                            {/*        </li>*/}
-                                            {/*        <li className="page-item">*/}
-                                            {/*            <button*/}
-                                            {/*                className="page-link">{currentPage + 1}/{totalPages}</button>*/}
-                                            {/*        </li>*/}
-                                            {/*        <li className="page-item">*/}
-                                            {/*            <button className="page-link" aria-label="Next"*/}
-                                            {/*                    disabled={currentPage + 1 >= totalPages}*/}
-                                            {/*                    onClick={() => nextPage()}>*/}
-                                            {/*                <span aria-hidden="true">&raquo;</span>*/}
-                                            {/*            </button>*/}
-                                            {/*        </li>*/}
-                                            {/*    </ul>*/}
-                                            {/*</div>*/}
                                             <div className="pt-5">
-                                                <h6 className="mb-0"><a href="#!"
+                                                <h6 className="mb-0"><a href="/allProduct"
                                                                         className="text-body"><i
                                                     className="fas fa-long-arrow-alt-left me-2"></i>Tiếp tục chọn
                                                     món</a></h6>
@@ -107,10 +111,14 @@ const Cart = () => {
                                                 <h5 className="text-uppercase">Giá: </h5>
                                                 <h5>{totalPrice.toLocaleString()} đ</h5>
                                             </div>
-
-                                            <button type="button" className="btn btn-dark btn-block btn-lg"
-                                                    data-mdb-ripple-color="dark">Thanh toán
-                                            </button>
+                                            {totalPrice > 0?
+                                                <>
+                                                    <button type="button" className="btn btn-dark btn-block btn-lg"
+                                                            data-mdb-ripple-color="dark" onClick={goOrderPage}>Thanh
+                                                        toán
+                                                    </button>
+                                                </>
+                                            :null}
 
                                         </div>
                                     </div>

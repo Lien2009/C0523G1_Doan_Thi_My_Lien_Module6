@@ -50,11 +50,27 @@ export const findCategoryById = async (id) => {
         alert("Tìm danh mục bị lỗi!")
     }
 }
+export const findRecommendProduct = async (cateId) => {
+    try {
+        const res = await axios.get(URL_PRODUCT + `/findRecommendProduct/${cateId}`);
+        return res.data
+    }catch (e){
+        alert("Tìm sp liên quan bị lỗi!")
+    }
+}
 export const findBestSeller = async () => {
     try {
         const res = await axios.get(URL_PRODUCT + `/bestSeller`);
         return res
     }catch (e){
         alert("Tìm bestSeller bị lỗi!")
+    }
+}
+export const findProductById = async (id)=>{
+    try{
+        const res = await axios.get(URL_PRODUCT + `/findById/${id}`)
+        return res.data;
+    }catch (e){
+        alert("Tìm sp lỗi")
     }
 }

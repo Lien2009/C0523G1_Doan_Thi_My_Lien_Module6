@@ -10,6 +10,9 @@ import {ToastContainer} from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import AllProduct from "./components/product/AllProduct";
 import BestSeller from "./components/product/BestSeller";
+import Detail from "./components/product/Detail";
+import Order from "./components/order/Order";
+import OrderHistory from "./components/order/OrderHistory";
 function App() {
     return (
         <>
@@ -25,8 +28,11 @@ function App() {
                 <Route path="/login" element={<Login/>}/>
                 <Route path="/cart" element={<Cart/>}/>
                 <Route path="/product/:id" element={<Product/>}/>
-                <Route path="/allProduct" element={<AllProduct/>}/>
-                <Route path="/bestSeller" element={<BestSeller/>}/>
+                <Route path="/all_product" element={<AllProduct/>}/>
+                <Route path="/best_seller" element={<BestSeller/>}/>
+                <Route path="/detail/:id" element={<Detail/>}/>
+                <Route path="/order" element={<Order/>}/>
+                <Route path="/order_history" element={<OrderHistory/>}/>
             </Routes>
             <ToastContainer/>
         </>

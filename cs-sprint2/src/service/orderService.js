@@ -9,14 +9,6 @@ export const getCart = async (userId)=>{
     }
 
 }
-export const addCart = async (productId,userId)=>{
-    try{
-        const res = await axios.post(URL_CART+`/addCart/${productId}/${userId}`);
-        return res;
-    }catch (e){
-        alert("thêm giỏ lỗi")
-    }
-}
 
 export const updateCart = async (userId, payload) => {
     try {
@@ -38,6 +30,27 @@ export const addProductToCartByUserIdAndProductId = async (userId, productId) =>
     try {
         return await axios.post(URL_CART+`/cart/${userId}/add/${productId}`)
     } catch (e) {
-        alert("Xóa lỗi")
+        alert("Thêm lỗi")
+    }
+}
+export const addOrder = async (userId,total,payment) =>{
+    try {
+        return await axios.post(URL_CART +`/addOrder?userId=${userId}&total=${total}&payment=${payment}`)
+    }catch (e){
+        alert("Tạo Order lỗi")
+    }
+}
+export const getAllOrder = async (userId)=>{
+    try{
+        return await axios.get(URL_CART +`/history/${userId}`)
+    }catch (e){
+        alert("Lịch sử đặt hàng lỗi")
+    }
+}
+export const getOrderDetail = async (userId)=>{
+    try{
+        return await axios.get(URL_CART +`/detail/${userId}`)
+    }catch (e){
+        alert("Lịch sử chi tiết lỗi")
     }
 }

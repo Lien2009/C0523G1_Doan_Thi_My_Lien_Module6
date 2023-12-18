@@ -4,12 +4,11 @@ import * as userService from "../../service/userService";
 import {addProductToCartByUserIdAndProductId, getCart} from "../../service/orderService";
 import {toast} from "react-toastify";
 import {useNavigate} from "react-router-dom";
+import {getCustomer} from "../../service/userService";
 
 export const CartContext = createContext({});
 const cartReducer = (state, action) => {
-    const addCart = async (productId, userId) => {
-        await orderService.addCart(productId, userId);
-    }
+
     switch (action.type) {
         case 'GET_CART':
             return {
@@ -51,25 +50,28 @@ export const CartProvider = ({children}) => {
     const [isRender, setIsRender] = useState(false);
     const [totalQuantity, setTotalQuantity] = useState(0);
     const [totalPrice, setTotalPrice] = useState(0);
-    const [currentPage, setCurrentPage] = useState(0);
-    const [totalPages, setTotalPages] = useState(0);
-    const [limit, setLimit] = useState(3);
     const [refresh, setRefresh] = useState(true);
     const navigate = useNavigate();
+    const [totalItem, setTotalItem] = useState(0);
+    const [customer, setCustomer] = useState();
 
     useEffect(() => {
         void getUserId();
+        if (userId) {
+            displayCustomer();
+        }
     }, [userId, setUserId]);
-    
+
     useEffect(() => {
         if (cartState && cartState.cartItem.length >= 0) {
+            setTotalItem(cartState.cartItem.length);
             const quantitiesAllPages = cartState?.cartItem.reduce((accumulator, currentCart) => accumulator + currentCart.quantity, 0);
             setTotalQuantity(quantitiesAllPages);
             const totalPrice = cartState?.cartItem.reduce((accumulator, currentCart) => accumulator + (currentCart.quantity * currentCart.price), 0);
             setTotalPrice(totalPrice);
         }
     }, [cartState]);
-    
+
     const getUserId = async () => {
         const jwtToken = userService.getJwtToken();
         if (jwtToken) {
@@ -80,6 +82,16 @@ export const CartProvider = ({children}) => {
             }
         } else {
             console.log("Khong tim thay user")
+        }
+    }
+    const displayCustomer = async () => {
+        const cus = await getCustomer(userId);
+        console.log(cus)
+        if (cus) {
+            setCustomer(cus);
+            console.log(cus)
+        } else {
+            console.log("Lỗi lấy thông tin KH")
         }
     }
     const getAllCart = async (userId) => {
@@ -105,7 +117,7 @@ export const CartProvider = ({children}) => {
         }
     };
     const handleAddProductToCart = async (productId) => {
-        if (userId === ''|| !localStorage.getItem("JWT")) {
+        if (userId === '' || !localStorage.getItem("JWT")) {
             navigate(`/login`);
             toast.warn("Vui lòng đăng nhập để đặt món!")
         } else {
@@ -125,8 +137,8 @@ export const CartProvider = ({children}) => {
             }
         }
     }
-    
-    
+
+
     return <CartContext.Provider value={{
         cartState,
         dispatch,
@@ -138,7 +150,9 @@ export const CartProvider = ({children}) => {
         totalPrice,
         setRefresh,
         getAllCart,
-        handleAddProductToCart
+        handleAddProductToCart,
+        totalItem,
+        customer
     }}>
         {children}
     </CartContext.Provider>

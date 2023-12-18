@@ -24,7 +24,7 @@ export default function Header() {
     const [isShowModal, setShowModal] = useState(false);
     const [categories, setCagories] = useState([]);
     const cartContext = useContext(CartContext);
-    const {totalQuantity} = cartContext;
+    const {totalQuantity,totalItem} = cartContext;
     const goLoginPage = () => {
         navigate(`/login`)
     }
@@ -58,7 +58,7 @@ export default function Header() {
         navigate(`/product/${id}`)
     }
     const goBestSellerPage = () => {
-        navigate(`/bestSeller`)
+        navigate(`/best_seller`)
     }
     return (
         <header className="lien-header">
@@ -154,7 +154,7 @@ export default function Header() {
                                                 <Link to="/" className="dropdown-item">Trang cá nhân</Link>
                                             </li>
                                             <li>
-                                                <Link to="/" className="dropdown-item">Lịch sử đặt hàng</Link>
+                                                <Link to="/order_history" className="dropdown-item">Lịch sử đặt hàng</Link>
                                             </li>
                                             {/*{currentRole === "ADMIN" &&*/}
                                             {/*    <li>*/}
@@ -197,7 +197,7 @@ export default function Header() {
                         <Link to="/cart">
                             <TbShoppingCartHeart style={{color: "white", fontSize: "35px"}}/>
                         </Link>
-                        <span className="cart__product-quantity">{totalQuantity >= 100 ? '+99' : totalQuantity}</span>
+                        <span className="cart__product-quantity">{totalItem >= 100 ? '+99' : totalItem}</span>
                     </div>
                 </nav>
             </div>

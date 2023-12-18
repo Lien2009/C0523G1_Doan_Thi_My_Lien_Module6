@@ -1,5 +1,6 @@
 .item {
     width: 100%;
+    max-width: 18rem;
     background-color: white;
     border-radius: 10px;
     height: 35rem;
@@ -11,6 +12,13 @@
 }
 .dad{
     position: relative;
+}
+.description {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 100%;
+    margin-left: 4px;
 }
 
 .card-list {

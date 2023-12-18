@@ -31,3 +31,12 @@ export const getUser = async (userName) => {
     const res = await axios.get(URL_LOGIN + `/getUser/${userName}`)
     return res.data;
 };
+export const getCustomer = async (userId) => {
+    try{
+        const res = await axios.get(URL_LOGIN + `/getCustomer/${userId}`)
+        return res.data;
+    }catch (e){
+        console.error(e)
+        alert("Lỗi KH")
+    }
+};

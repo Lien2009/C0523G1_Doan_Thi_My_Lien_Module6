@@ -14,13 +14,13 @@ const BodyMainPage = () => {
         navigate(`/register`)
     }
     const goAllProductPage = () => {
-        navigate(`/allProduct`)
+        navigate(`/all_product`)
     }
     const goProductPage = (id) => {
         navigate(`/product/${id}`)
     }
     const goBestSellerPage = () => {
-        navigate(`/bestSeller`)
+        navigate(`/best_seller`)
     }
     useEffect(() => {
         display();
