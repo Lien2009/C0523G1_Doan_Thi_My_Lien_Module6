@@ -28,5 +28,6 @@ public interface IOrderService {
     void addOrder(int new_id_account, int new_total_price, int new_payment_status);
     List<OrderDto> getAllOrder(int userId);
     List<OrderDetailDto> getOrderDetail(int orderId);
+    void updateFeedbackStatus(int orderDetailId,int point);
 
 }

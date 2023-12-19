@@ -16,6 +16,8 @@ import java.util.List;
 public class ProductService implements IProductService{
     @Autowired
     private IProductRepository productRepository;
+//    @Autowired
+//    private IFeedbackPointRepository feedbackPointRepository;
     @Override
     public Page<ProductDto> getAll(Pageable pageable, String name) {
         return productRepository.findAll(pageable, "%" + name + "%");
@@ -60,4 +62,11 @@ public class ProductService implements IProductService{
     public List<Product> findRecommendProduct(int cateId) {
         return productRepository.findAllByCategory(cateId);
     }
+
+//    @Override
+//    public void addFeedback(int point, int productId) {
+//        feedbackPointRepository.addFeedbackPoint(point,productId);
+//    }
+
+
 }

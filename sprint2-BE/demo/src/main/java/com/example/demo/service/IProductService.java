@@ -19,4 +19,5 @@ public interface IProductService {
     DetailProduct findProductDtoById(int id);
     Product findProductInCart(int id);
     List<Product> findRecommendProduct(int cateId);
+//    void addFeedback(int point, int productId);
 }

@@ -5,15 +5,10 @@ import com.example.demo.dto.CartDto;
 import com.example.demo.dto.OrderDetailDto;
 import com.example.demo.dto.OrderDto;
 import com.example.demo.dto.ResponseContentDto;
-import com.example.demo.model.Order;
-import com.example.demo.model.OrderDetail;
 import com.example.demo.service.IOrderService;
 import com.example.demo.service.IProductService;
 import com.example.demo.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -85,5 +80,10 @@ public class OrderController {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(orderDetailDtoList, HttpStatus.OK);
+    }
+    @PutMapping("/status/{orderDetailId}/{point}")
+    public ResponseEntity<?> updateFeedbackStatus(@PathVariable int orderDetailId, @PathVariable int point) {
+        orderService.updateFeedbackStatus(orderDetailId,point);
+        return ResponseEntity.ok("Cập nhật thành công");
     }
 }

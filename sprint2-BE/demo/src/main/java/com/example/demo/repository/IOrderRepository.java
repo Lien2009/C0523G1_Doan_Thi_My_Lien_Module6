@@ -34,14 +34,19 @@ public interface IOrderRepository extends JpaRepository<Order, Integer> {
     @Transactional
     @Query(value = "CALL CreateOrder(:new_id_account, :new_total_price, :new_payment_status)", nativeQuery = true)
     void addOrder(int new_id_account, int new_total_price, int new_payment_status);
+
     @Query(value = "select orders.id, orders.user_id as userId, orders.order_date as orderDate, orders.total_price as totalPrice\n" +
             "from orders where orders.user_id = :userId order by orders.order_date DESC", nativeQuery = true)
     List<OrderDto> getAllOrder(int userId);
-    @Query(value = "select products.name, order_detail.quantity, order_detail.price, order_detail.order_id as orderId\n" +
+
+    @Query(value = "select order_detail.id, products.id as productId, products.name, order_detail.quantity, order_detail.price, order_detail.order_id as orderId, order_detail.feedback_status as feedbackStatus\n" +
             "from order_detail \n" +
             "join products on order_detail.product_id = products.id\n" +
             "join orders on order_detail.order_id = orders.id\n" +
             "where orders.user_id = :userId", nativeQuery = true)
     List<OrderDetailDto> getOrderDetail(int userId);
-
+    @Modifying
+    @Transactional
+    @Query(value = "UPDATE order_detail SET feedback_status = :point WHERE (id = :orderDetailId)", nativeQuery = true)
+    void updateFeedbackStatus(@Param("orderDetailId") int orderDetailId, @Param("point") int point);
 }

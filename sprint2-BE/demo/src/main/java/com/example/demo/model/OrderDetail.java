@@ -21,6 +21,9 @@ public class OrderDetail {
     @Basic
     @Column(name = "price")
     private int price;
+    @Basic
+    @Column(name = "feedback_status", columnDefinition = "int default 0")
+    private int feedbackStatus;
 
     @ManyToOne
     @JoinColumn(name = "product_id", referencedColumnName = "id")

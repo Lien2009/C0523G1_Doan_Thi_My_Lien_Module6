@@ -13,32 +13,32 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface IProductRepository extends JpaRepository<Product, Integer> {
-    @Query(value = "select products.id, products.name, products.image, products.description, products.price, IFNULL(CEIL(AVG(feedbacks.point)), 0) as feedbackPoint\n" +
+    @Query(value = "select products.id, products.name, products.image, products.description, products.price, IFNULL(CEIL(AVG(CASE WHEN order_detail.feedback_status > 0 THEN order_detail.feedback_status ELSE NULL END)), 0) as feedbackPoint\n" +
             "from products\n" +
-            "left join feedbacks on products.id = feedbacks.product_id\n" +
+            "left join order_detail on products.id = order_detail.product_id\n" +
             "where products.is_deleted = 0 and products.description like :name group by products.id ORDER BY products.price", nativeQuery = true)
     Page<ProductDto> findAll(Pageable pageable, @Param("name") String name);
-    @Query(value = "select products.id, products.name, products.image, products.description, products.price, products.quantity,products.category_id as categoryId, IFNULL(CEIL(AVG(feedbacks.point)), 0) as feedbackPoint\n" +
+    @Query(value = "select products.id, products.name, products.image, products.description, products.price, products.quantity,products.category_id as categoryId, IFNULL(CEIL(AVG(CASE WHEN order_detail.feedback_status > 0 THEN order_detail.feedback_status ELSE NULL END)), 0) as feedbackPoint\n" +
             "from products\n" +
-            "left join feedbacks on products.id = feedbacks.product_id\n" +
+            "left join order_detail on products.id = order_detail.product_id\n" +
             "where products.id =:id", nativeQuery = true)
     DetailProduct findProductDtoById(@Param("id") int id);
-    @Query(value = "select products.id, products.name, products.image, products.description, products.price, IFNULL(CEIL(AVG(feedbacks.point)), 0) as feedbackPoint\n" +
+    @Query(value = "select products.id, products.name, products.image, products.description, products.price, IFNULL(CEIL(AVG(CASE WHEN order_detail.feedback_status > 0 THEN order_detail.feedback_status ELSE NULL END)), 0) as feedbackPoint\n" +
             "from products\n" +
-            "left join feedbacks on products.id = feedbacks.product_id\n" +
+            "left join order_detail on products.id = order_detail.product_id\n" +
             "where products.is_deleted = 0 and products.description like :name group by products.id ORDER BY feedbackPoint DESC, products.price asc", nativeQuery = true)
     Page<ProductDto> findAllSortByPoint(Pageable pageable, @Param("name") String name);
 
-    @Query(value = "select products.id, products.name, products.image, products.description, products.price, IFNULL(CEIL(AVG(feedbacks.point)), 0) as feedbackPoint\n" +
+    @Query(value = "select products.id, products.name, products.image, products.description, products.price, IFNULL(CEIL(AVG(CASE WHEN order_detail.feedback_status > 0 THEN order_detail.feedback_status ELSE NULL END)), 0) as feedbackPoint\n" +
             "            from products\n" +
-            "            left join feedbacks on products.id = feedbacks.product_id\n" +
+            "            left join order_detail on products.id = order_detail.product_id\n" +
             "            left join categories on products.category_id = categories.id\n" +
             "            where products.is_deleted = 0 and products.description like :name and categories.id like :categoryId\n" +
             "            group by products.id ORDER BY products.price", nativeQuery = true)
     Page<ProductDto> findProductByCate(Pageable pageable, @Param("name") String name, @Param("categoryId") String categoryId);
-    @Query(value = "select products.id, products.name, products.image, products.description, products.price, IFNULL(CEIL(AVG(feedbacks.point)), 0) as feedbackPoint\n" +
+    @Query(value = "select products.id, products.name, products.image, products.description, products.price, IFNULL(CEIL(AVG(CASE WHEN order_detail.feedback_status > 0 THEN order_detail.feedback_status ELSE NULL END)), 0) as feedbackPoint\n" +
             "            from products\n" +
-            "            left join feedbacks on products.id = feedbacks.product_id\n" +
+            "            left join order_detail on products.id = order_detail.product_id\n" +
             "            left join categories on products.category_id = categories.id\n" +
             "            where products.is_deleted = 0 and products.description like :name and categories.id like :categoryId\n" +
             "            group by products.id ORDER BY feedbackPoint DESC, products.price asc", nativeQuery = true)
@@ -48,10 +48,9 @@ public interface IProductRepository extends JpaRepository<Product, Integer> {
     Product findProductInCart(@Param("id") int id);
 
     @Query(value = "select products.id, products.name, products.image, products.description, products.price, \n" +
-            "IFNULL(CEIL(AVG(feedbacks.point)), 0) as feedbackPoint, \n" +
+            "IFNULL(CEIL(AVG(CASE WHEN order_detail.feedback_status > 0 THEN order_detail.feedback_status ELSE NULL END)), 0) as feedbackPoint, \n" +
             "sum(order_detail.quantity) as orderQuantity\n" +
             "from products \n" +
-            "left join feedbacks on products.id = feedbacks.product_id\n" +
             "join order_detail on products.id = order_detail.product_id\n" +
             "group by order_detail.product_id\n" +
             "order by orderQuantity desc\n" +

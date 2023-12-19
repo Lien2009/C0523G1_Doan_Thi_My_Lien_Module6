@@ -208,6 +208,11 @@ public class OrderService implements IOrderService {
         return orderDetailDtoList;
     }
 
+    @Override
+    public void updateFeedbackStatus(int orderDetailId,int point) {
+        orderRepository.updateFeedbackStatus(orderDetailId,point);
+    }
+
     private List<CartCommand.CartCreateCommand> getNewListCart (Set<Optional<Cart>> newListCart) {
         List<CartCommand.CartCreateCommand> listCartResponse = new ArrayList<>();
         for (Optional<Cart> newCartOpt: newListCart) {
