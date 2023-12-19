@@ -5,11 +5,13 @@ import {CartContext} from "../context/Context";
 import {addOrder} from "../../service/orderService";
 import {toast} from "react-toastify";
 import {getCustomer} from "../../service/userService";
+import {useNavigate} from "react-router-dom";
 
 const Order = () => {
     const cartContext = useContext(CartContext);
-    const {userId, totalPrice, customer,dispatch} = cartContext;
+    const {userId, totalPrice, customer, dispatch} = cartContext;
     const [payment, setPayment] = useState();
+    const navigate = useNavigate();
     useEffect(() => {
         handleAddOrder()
     }, [payment])
@@ -22,7 +24,7 @@ const Order = () => {
                     type: 'REMOVE_ALL_ITEMS',
                 })
                 toast.success("Đặt hàng thành công!")
-
+                navigate("/cart")
             } else {
                 toast.warn("Đặt hàng thất bại!")
             }
@@ -37,15 +39,20 @@ const Order = () => {
                     <div className="card-heading"></div>
                     <div className="card-body">
                         <h2 className="title">Xác nhận thông tin đơn hàng</h2>
-                        <div className="information"><span style={{fontWeight: "bolder"}}>Họ tên người nhận: </span>{customer.name}</div>
-                        <div className="information"><span style={{fontWeight: "bolder"}}>Địa chỉ: </span>{customer.address}</div>
-                        <div className="information"><span style={{fontWeight: "bolder"}}>Số điện thoại: </span>{customer.phone}</div>
-                        <div className="information"><span style={{fontWeight: "bolder"}}>Tổng hóa đơn: </span>{totalPrice.toLocaleString()} đ
+                        <div className="information"><span
+                            style={{fontWeight: "bolder"}}>Họ tên người nhận: </span>{customer.name}</div>
+                        <div className="information"><span
+                            style={{fontWeight: "bolder"}}>Địa chỉ: </span>{customer.address}</div>
+                        <div className="information"><span
+                            style={{fontWeight: "bolder"}}>Số điện thoại: </span>{customer.phone}</div>
+                        <div className="information"><span
+                            style={{fontWeight: "bolder"}}>Tổng hóa đơn: </span>{totalPrice.toLocaleString()} đ
                         </div>
                         <hr/>
                         <div>Chọn phương thức thanh toán:</div>
                         {totalPrice > 0 ?
-                            <div style={{marginTop:"0.5rem"}}>
+                            <div style={{marginTop: "0.5rem"}}>
+                                <span>Tỷ giá USD/VND: 20.000 đ</span>
                                 <button type="button" className="btn btn-dark btn-block btn-lg"
                                         data-mdb-ripple-color="dark" onClick={() => setPayment(0)}>Thanh
                                     toán PayPal
@@ -57,7 +64,7 @@ const Order = () => {
                             : null}
                         {payment === 0 ?
                             <PayPalButton classname="paypal-button-label-container"
-                                          amount={totalPrice/20000}
+                                          amount={totalPrice / 20000}
                                 // shippingPreference="NO_SHIPPING" // default is "GET_FROM_FILE"
                                           onSuccess={(details, data) => {
                                               setPayment(2);

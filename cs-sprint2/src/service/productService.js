@@ -74,3 +74,11 @@ export const findProductById = async (id)=>{
         alert("Tìm sp lỗi")
     }
 }
+export const addFeedback = async (point, productId)=>{
+    try{
+        const res = await axios.post(URL_PRODUCT + `/feedback?point=${point}&productId=${productId}`);
+        return res;
+    }catch (e){
+        alert("Feedback lỗi")
+    }
+}

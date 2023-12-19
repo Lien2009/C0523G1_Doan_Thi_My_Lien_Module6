@@ -54,3 +54,10 @@ export const getOrderDetail = async (userId)=>{
         alert("Lịch sử chi tiết lỗi")
     }
 }
+export const updateFeedbackStatus = async (orderDetailId,point) => {
+    try {
+        return await axios.put(URL_CART+`/status/${orderDetailId}/${point}`)
+    } catch (e) {
+        alert("Cập nhật feedback lỗi")
+    }
+}
