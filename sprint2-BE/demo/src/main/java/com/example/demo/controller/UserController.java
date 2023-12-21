@@ -65,5 +65,13 @@ public class UserController {
         }
         return new ResponseEntity<>("Không tìm thấy customer", HttpStatus.NOT_FOUND);
     }
+    @PutMapping("/customer")
+    public ResponseEntity<?> updateCustomer(@RequestParam(name = "phone", defaultValue = "", required = false) String phone,
+                                                  @RequestParam(name = "email", defaultValue = "", required = false) String email,
+                                                  @RequestParam(name = "address", defaultValue = "", required = false) String address,
+                                            @RequestParam(name = "userId", defaultValue = "0", required = false) int userId) {
+        userService.updateCustomer(phone, email, address, userId);
+        return ResponseEntity.ok("Cập nhật thành công");
+    }
 
 }

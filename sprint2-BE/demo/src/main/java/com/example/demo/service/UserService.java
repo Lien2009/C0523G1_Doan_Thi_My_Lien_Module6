@@ -36,6 +36,11 @@ public class UserService implements IUserService{
     }
 
     @Override
+    public void updateCustomer(String phone, String email, String address, int userId) {
+        userRepository.updateCustomer(phone,email,address,userId);
+    }
+
+    @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = findByUserName(username);
         if (user == null){
