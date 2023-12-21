@@ -4,7 +4,6 @@ import React, {useContext, useEffect, useState} from "react";
 import {CartContext} from "../context/Context";
 import {addOrder} from "../../service/orderService";
 import {toast} from "react-toastify";
-import {getCustomer} from "../../service/userService";
 import {useNavigate} from "react-router-dom";
 
 const Order = () => {

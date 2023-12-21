@@ -151,6 +151,7 @@ export const CartProvider = ({children}) => {
         setRefresh,
         getAllCart,
         handleAddProductToCart,
+        displayCustomer,
         totalItem,
         customer
     }}>

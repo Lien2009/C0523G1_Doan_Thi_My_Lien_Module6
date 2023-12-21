@@ -89,12 +89,12 @@ const BodyMainPage = () => {
                                 <div className="card" key={index}>
                                     <div className="lien-bg"><img src={cate.image}/></div>
                                     <div className="blob"></div>
-                                    <div className="card-text" onClick={() =>
+                                    <button className="card-text" onClick={() =>
                                     {if(index === 0){
                                         goBestSellerPage();
                                     }else {goProductPage(cate.id)}}}>{cate.name}<i
                                         className="fa-solid fa-angle-right fa-beat"
-                                        style={{color: "white"}}></i></div>
+                                        style={{color: "white"}}></i></button>
                                 </div>
                             )
                         })

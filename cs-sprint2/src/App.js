@@ -13,6 +13,7 @@ import BestSeller from "./components/product/BestSeller";
 import Detail from "./components/product/Detail";
 import Order from "./components/order/Order";
 import OrderHistory from "./components/order/OrderHistory";
+import Customer from "./components/customer/Customer";
 function App() {
     return (
         <>
@@ -33,6 +34,7 @@ function App() {
                 <Route path="/detail/:id" element={<Detail/>}/>
                 <Route path="/order" element={<Order/>}/>
                 <Route path="/order_history" element={<OrderHistory/>}/>
+                <Route path="/customer" element={<Customer/>}/>
             </Routes>
             <ToastContainer/>
         </>

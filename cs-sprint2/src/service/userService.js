@@ -40,3 +40,10 @@ export const getCustomer = async (userId) => {
         alert("Lỗi KH")
     }
 };
+export const updateCustomer = async (phone, email, address, userId) => {
+    try {
+        return await axios.put(URL_LOGIN+`/customer?phone=${phone}&email=${email}&address=${address}&userId=${userId}`)
+    } catch (e){
+        alert("Cập nhật KH lỗi")
+    }
+}

@@ -151,7 +151,7 @@ export default function Header() {
                                         </a>
                                         <ul className="dropdown-menu">
                                             <li>
-                                                <Link to="/" className="dropdown-item">Trang cá nhân</Link>
+                                                <Link to="/customer" className="dropdown-item">Trang cá nhân</Link>
                                             </li>
                                             <li>
                                                 <Link to="/order_history" className="dropdown-item">Lịch sử đặt hàng</Link>

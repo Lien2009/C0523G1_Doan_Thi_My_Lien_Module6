@@ -129,7 +129,7 @@ const AllProduct = () => {
                                     </div>
                                     <div className="detail">
                                         <h4 className="">{pro.name}</h4>
-                                        <p><span className="">{pro.description}</span></p>
+                                        <p className="description"><span>{pro.description}</span></p>
                                         <p className="">
                                             {renderStars(pro.feedbackPoint)}
                                         </p>
