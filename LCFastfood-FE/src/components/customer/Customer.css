@@ -1,0 +1,38 @@
+.body{
+    overflow: hidden;
+}
+.customer{
+    margin-top: 7rem;
+    margin-bottom: 1rem;
+}
+
+.form-control:focus {
+    box-shadow: none;
+}
+
+.profile-button {
+    box-shadow: none;
+    border: none
+}
+
+
+.profile-button:focus {
+    box-shadow: none
+}
+
+.profile-button:active {
+    box-shadow: none
+}
+
+.back:hover {
+    cursor: pointer
+}
+
+.labels {
+    font-size: 11px
+}
+
+.add-experience:hover {
+    color: #fff;
+    cursor: pointer;
+}
